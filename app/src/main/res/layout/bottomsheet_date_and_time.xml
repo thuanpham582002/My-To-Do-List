@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Theme.Material3.Dark.BottomSheetDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--    android:paddingTop="@dimen/medium_margin"-->
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="dat nhac nho"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDetailTime"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDialogTitle"
+        android:layout_centerHorizontal="true"
+        android:text="time" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDetailTime"
+        android:layout_alignParentStart="true"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:scaleX="0.9"
+        android:scaleY="0.9" />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDetailTime"
+        android:layout_alignParentEnd="true"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:timePickerMode="spinner" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/datePicker"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/ThemeOverlay.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="cancel"
+            android:textStyle="bold" />
+        <!--        android:layout_marginEnd="@dimen/extreme_large_margin3"-->
+        <Button
+            android:id="@+id/btnOK"
+            style="@style/ThemeOverlay.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ok"
+            android:textStyle="bold" />
+        <!--        android:layout_marginStart="@dimen/extreme_large_margin3"-->
+    </LinearLayout>
+</RelativeLayout>

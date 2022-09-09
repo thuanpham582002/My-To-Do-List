@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
 import thuan.todolist.feature_todo.domain.model.ToDo
@@ -17,7 +18,8 @@ import thuan.todolist.feature_todo.viewmodel.ToDoViewModel
 
 class ToDoAdapter(private val viewModel: ToDoViewModel) :
     RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
-    private var dataList = emptyList<ToDo>()
+    var dataList = emptyList<ToDo>()
+    var tracker: SelectionTracker<Long>? = null
 
     inner class ToDoViewHolder(val binding: ItemTodoBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -30,6 +32,17 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             binding.executePendingBindings()
         }
 
+        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> {
+            return object : ItemDetailsLookup.ItemDetails<Long>() {
+                override fun getSelectionKey(): Long? {
+                    return binding.todo?.id?.toLong()
+                }
+
+                override fun getPosition(): Int {
+                    return adapterPosition
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
@@ -53,18 +66,6 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         val animation: Animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim_fade_in)
         holder.binding.root.startAnimation(animation)
-
-        holder.binding.root.setOnLongClickListener() {
-            Snackbar.make(
-                holder.binding.root,
-                "Delete ${dataList[position].title}?",
-                Snackbar.LENGTH_LONG
-            ).setAction("Yes") {
-                viewModel.deleteToDo(dataList[position])
-            }.show()
-
-            true
-        }
     }
 
     override fun onViewDetachedFromWindow(holder: ToDoViewHolder) {
