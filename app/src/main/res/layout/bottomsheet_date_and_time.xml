@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="dat nhac nho"
+        android:text="@string/set_date_and_time"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvDialogTitle"
         android:layout_centerHorizontal="true"
-        android:text="time" />
+       />
 
     <DatePicker
         android:id="@+id/datePicker"
@@ -58,8 +58,7 @@
             style="@style/ThemeOverlay.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="cancel"
+            android:text="@string/cancel"
             android:textStyle="bold" />
         <!--        android:layout_marginEnd="@dimen/extreme_large_margin3"-->
         <Button
@@ -67,7 +66,7 @@
             style="@style/ThemeOverlay.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ok"
+            android:text="@string/ok"
             android:textStyle="bold" />
         <!--        android:layout_marginStart="@dimen/extreme_large_margin3"-->
     </LinearLayout>

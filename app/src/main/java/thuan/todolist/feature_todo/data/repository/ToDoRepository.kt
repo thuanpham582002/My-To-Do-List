@@ -7,7 +7,8 @@ import thuan.todolist.feature_todo.domain.model.ToDo
 
 interface ToDoRepository {
     fun getAllToDo(): LiveData<List<ToDo>>
-    fun getAllToDoWithGroup(groupName : String): LiveData<List<GroupWithToDos>>
+    fun getAllToDoWithGroup(groupName: String): LiveData<List<GroupWithToDos>>
+    fun getAllGroup(): LiveData<List<GroupToDo>>
     suspend fun deleteToDo(toDo: ToDo)
     suspend fun insertToDo(toDo: ToDo)
     suspend fun insertGroup(group: GroupToDo)

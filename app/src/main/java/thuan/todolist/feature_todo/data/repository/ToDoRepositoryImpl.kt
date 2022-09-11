@@ -15,6 +15,10 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getAllToDoWithGroup(groupName)
     }
 
+    override fun getAllGroup(): LiveData<List<GroupToDo>> {
+        return dao.getAllGroup()
+    }
+
     override suspend fun deleteToDo(toDo: ToDo) {
         dao.deleteToDoById(toDo)
     }

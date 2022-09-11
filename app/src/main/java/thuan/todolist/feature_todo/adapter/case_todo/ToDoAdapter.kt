@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.adapter
+package thuan.todolist.feature_todo.adapter.case_todo
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
+import thuan.todolist.feature_todo.adapter.case_todo.util.ToDoDiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.viewmodel.ToDoViewModel
 
@@ -32,6 +33,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             bindData(todo, viewModel)
             startAnimation()
             checkItemSelection(todo)
+
         }
 
         private fun bindData(
@@ -66,10 +68,14 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             }
         }
 
-        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> {
+        // fun getItemDetails is used to get the item details
+        // which is used by the selection tracker
+        // to track the selected items
+        // and perform actions on them.
+        fun getToDoDetails(): ItemDetailsLookup.ItemDetails<Long> {
             return object : ItemDetailsLookup.ItemDetails<Long>() {
-                override fun getSelectionKey(): Long? {
-                    return binding.todo?.id?.toLong()
+                override fun getSelectionKey(): Long {
+                    return dataList[adapterPosition].id.toLong()
                 }
 
                 override fun getPosition(): Int {

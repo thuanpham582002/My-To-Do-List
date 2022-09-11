@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="todo"
             type="thuan.todolist.feature_todo.domain.model.ToDo" />
@@ -20,11 +19,15 @@
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true"
         app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/cardview_color"
+        app:strokeColor="@color/border_color"
+        android:goToEdit="@{todo}"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <CheckBox
                 android:id="@+id/checkbox"
@@ -52,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="50dp"
                 android:paddingEnd="25dp"
-                android:text="@{todo.time + ',' + todo.date}"
+                android:text="@{todo.dateAndTime}"
                 android:textColor="@{todo.isCompleted ? @color/gray : @color/black}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"

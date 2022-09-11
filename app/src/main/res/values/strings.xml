@@ -7,4 +7,13 @@
 
     <string name="add_todo">add Todo</string>
     <string name="search">Search</string>
+    <string name="title">Title</string>
+    <string name="no_list_selected">No list selected</string>
+    <string name="time_not_set">Time not set</string>
+    <string name="description">Description</string>
+    <string name="save">save</string>
+    <string name="add_group">Add group</string>
+    <string name="set_date_and_time">Set Date and Time</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 </resources>

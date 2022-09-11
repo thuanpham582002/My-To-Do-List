@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.adapter
+package thuan.todolist.feature_todo.adapter.case_todo.util
 
 import androidx.recyclerview.widget.DiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
@@ -22,8 +22,7 @@ class ToDoDiffUtil(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition].id == newList[newItemPosition].id
                 && oldList[oldItemPosition].title == newList[newItemPosition].title
-                && oldList[oldItemPosition].time == newList[newItemPosition].time
+                && oldList[oldItemPosition].dateAndTime == newList[newItemPosition].dateAndTime
                 && oldList[oldItemPosition].isCompleted == newList[newItemPosition].isCompleted
-                && oldList[oldItemPosition].date == newList[newItemPosition].date
     }
 }

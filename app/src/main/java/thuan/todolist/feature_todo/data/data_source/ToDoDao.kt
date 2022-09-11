@@ -15,16 +15,20 @@ interface ToDoDao {
     @Query("SELECT * FROM group_todo_table WHERE group_name = :groupName")
     fun getAllToDoWithGroup(groupName: String): LiveData<List<GroupWithToDos>>
 
+    @Query("SELECT * FROM group_todo_table")
+    fun getAllGroup(): LiveData<List<GroupToDo>>
+
+
     @Query("SELECT * FROM todo_table WHERE todo_is_completed = 0")
     fun getToDoNotDone(): LiveData<List<ToDo>>
 
     @Query("SELECT * FROM todo_table WHERE id = :id")
     fun getToDoById(id: Int): LiveData<ToDo>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertToDo(toDo: ToDo)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroup(group: GroupToDo)
 
 

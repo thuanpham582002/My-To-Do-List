@@ -6,14 +6,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         tools:context=".feature_todo.ui.add.AddFragment">
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:autofillHints="title"
             android:background="@android:color/transparent"
-            android:textSize="24dp"
+            android:hint="@string/title"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textSize="@dimen/title1_size"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,31 +26,63 @@
             android:id="@+id/cv_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/cardview_color"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTitle">
+            app:layout_constraintTop_toBottomOf="@+id/etTitle"
+            app:strokeWidth="1dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="zkerZinChao"
-                android:textColor="@android:color/black"
-                app:drawableStartCompat="@drawable/ic_delete" />
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.AppCompat.Spinner.DropDown"
+                    android:spinnerMode="dropdown" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/add_group"
+                    android:src="@drawable/ic_playlist_add"
+                    app:layout_constraintStart_toEndOf="@id/cv_group"
+                    app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/cardview_color"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cv_group">
+            app:layout_constraintTop_toBottomOf="@+id/cv_group"
+            app:strokeWidth="1dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="zkerZinChao2"
-                android:textColor="@android:color/black"
-                app:drawableStartCompat="@drawable/ic_delete" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_time_and_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:text="@string/time_not_set"
+                    android:textColor="@android:color/black"
+                    app:drawableStartCompat="@drawable/ic_delete" />
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -53,9 +90,12 @@
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:autofillHints="description"
             android:background="@android:color/transparent"
-            android:textSize="24dp"
-            android:hint="Lời mô tả"
+            android:hint="@string/description"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textSize="@dimen/title2_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_time" />
 

@@ -6,8 +6,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/cardview_light_background"
         tools:context=".feature_todo.ui.home.HomeFragment">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cardview_color"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="1dp">
+
+            <Spinner
+                android:id="@+id/spinner_group"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -16,7 +38,7 @@
             android:paddingStart="@dimen/fab_margin"
             android:paddingEnd="@dimen/fab_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_group"
             tools:listitem="@layout/item_todo" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

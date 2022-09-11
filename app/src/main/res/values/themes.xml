@@ -2,9 +2,18 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ToDoList2" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeStyle">@style/Theme.ActionMode</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ToDoList2" parent="Base.Theme.ToDoList2" />
+    <style name="Theme.ToDoList2" parent="Base.Theme.ToDoList2">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeStyle">@style/Theme.ActionMode</item>
+    </style>
+
+    <style name="Theme.ActionMode" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/toolbar_color</item>
+    </style>
+
 </resources>
