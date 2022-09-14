@@ -15,9 +15,8 @@ import thuan.todolist.feature_todo.domain.model.ToDo
 abstract class ToDoDatabase : RoomDatabase() {
     abstract val toDoDao: ToDoDao
 
-
     companion object {
-        const val DATABASE_NAME = "todo_db"
+        private const val DATABASE_NAME = "todo_db"
 
         @Volatile // volatile is used to make sure that the value of INSTANCE is always up-to-date and the same to all execution threads
         private var instance: ToDoDatabase? = null

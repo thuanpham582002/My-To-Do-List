@@ -9,6 +9,15 @@
         android:background="@color/cardview_light_background"
         tools:context=".feature_todo.ui.home.HomeFragment">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolbar_color"
+            android:theme="@style/Base.Theme.ToDoList2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_group"
             android:layout_width="wrap_content"
@@ -17,7 +26,7 @@
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:strokeWidth="1dp">
 
             <Spinner

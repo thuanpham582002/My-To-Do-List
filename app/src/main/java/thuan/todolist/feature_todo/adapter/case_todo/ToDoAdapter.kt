@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
@@ -15,15 +14,14 @@ import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
 import thuan.todolist.feature_todo.adapter.case_todo.util.ToDoDiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
-import thuan.todolist.feature_todo.viewmodel.ToDoViewModel
-
+import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 
 class ToDoAdapter(private val viewModel: ToDoViewModel) :
     RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
     var dataList = emptyList<ToDo>()
     var tracker: SelectionTracker<Long>? = null
 
-    inner class ToDoViewHolder(val binding: ItemTodoBinding) :
+    inner class ToDoViewHolder(private val binding: ItemTodoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             todo: ToDo,
@@ -33,7 +31,6 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             bindData(todo, viewModel)
             startAnimation()
             checkItemSelection(todo)
-
         }
 
         private fun bindData(
@@ -49,7 +46,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             // set animation fade in for each item
 //        holder.binding.root.alpha = 0f
 //        holder.binding.root.translationY = 100f
-//        holder.binding.root.animate().alpha(1f).translationY(0f).setDuration(500).start() gây lỗi khi bind lại
+//        holder.binding.root.animate().alpha(1f).translationY(0f).setDuration(500).start()
             val animation: Animation =
                 AnimationUtils.loadAnimation(binding.root.context, R.anim.anim_fade_in)
             binding.root.startAnimation(animation)
@@ -103,7 +100,6 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
     override fun onViewDetachedFromWindow(holder: ToDoViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.detachAnimation()
-
     }
 
     override fun getItemCount(): Int {

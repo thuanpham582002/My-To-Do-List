@@ -7,15 +7,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.appbar.MaterialToolbar
 import thuan.todolist.MainActivity
 import thuan.todolist.R
 import thuan.todolist.databinding.FragmentHomeBinding
@@ -23,12 +20,15 @@ import thuan.todolist.feature_todo.adapter.case_todo.ToDoAdapter
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
 
-class HomeFragment : Fragment(), ActionMode.Callback {
-    private var isOnDestroyView: Boolean = false
-    lateinit var binding: FragmentHomeBinding
-    lateinit var toDoAdapter: ToDoAdapter
+const val TAG = "HomeFragment"
+
+class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextListener,
+    AdapterView.OnItemSelectedListener {
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var toDoAdapter: ToDoAdapter
+    lateinit var selectionTracker: SelectionTracker<Long>
     private var actionMode: ActionMode? = null
-    private var searchQuery: String = ""
+    private var isViewCreated = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,76 +42,90 @@ class HomeFragment : Fragment(), ActionMode.Callback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        isViewCreated = true
         Log.i("HomeFragment", "onViewCreated")
-        isOnDestroyView = false
         toDoAdapter = ToDoAdapter((requireActivity() as MainActivity).toDoViewModel)
+        setupToolbar()
+        setupSpinnerGroup()
         setupRecyclerview()
-        setOptionsMenu()
-        setupUiComponents()
+        setupSelectionTrackerAdapter()
 
+        (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
+            .observe(viewLifecycleOwner) { list ->
+                toDoAdapter.setData(list)
+            }
+
+        //        (requireActivity() as MainActivity).toDoViewModel.getAllToDoWithGroup("First").observe(viewLifecycleOwner) {
+//            toDoAdapter.setData(it[0].todos)
+//            Log.i("HomeFragment", "onViewCreated: $it")
+//        }
+        binding.fabAdd.setOnClickListener {
+            onDestroyActionMode(actionMode)
+            (requireActivity() as MainActivity).toDoViewModel.apply {
+                goToAddAndEditToDoFragment(it, defaultTodo)
+            }
+        }
+    }
+
+    private fun setupSpinnerGroup() {
         val group = listOf("All", "Completed", "Uncompleted")
         val spinner = binding.spinnerGroup
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, group)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                when (position) {
-                    0 -> {
-                        // set text for spinner
-                        spinner.setSelection(0)
-                    }
-                    1 -> {
-                        // set text for spinner
-                        spinner.setSelection(1)
-                    }
-                    2 -> {
-                        // set text for spinner
-                        spinner.setSelection(2)
-                    }
-                }
-            }
+        spinner.onItemSelectedListener = this
+    }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        when (p2) {
+            0 -> {
+                (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
+                    .observe(viewLifecycleOwner) { list ->
+                        toDoAdapter.setData(list)
+                    }
             }
+//            1 -> {
+//                (requireActivity() as MainActivity).toDoViewModel.getAllCompletedToDo()
+//                    .observe(viewLifecycleOwner) { list ->
+//                        toDoAdapter.setData(list)
+//                    }
+//            }
+//            2 -> {
+//                (requireActivity() as MainActivity).toDoViewModel.getAllUncompletedToDo()
+//                    .observe(viewLifecycleOwner) { list ->
+//                        toDoAdapter.setData(list)
+//                    }
+//            }
+//
         }
+    }
 
-        if (!(requireActivity() as MainActivity).toDoViewModel.savedStateHandle.contains("search"))
-            (requireActivity() as MainActivity).toDoViewModel.savedStateHandle["search"] = ""
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
 
-        (requireActivity() as MainActivity).toDoViewModel.savedStateHandle.getLiveData<String>("search")
-            .observe(viewLifecycleOwner) {
-                if (it != "") {
-                    searchQuery = it
-                    (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
-                        .observe(viewLifecycleOwner) { list ->
-                            toDoAdapter.setData(list.filter { toDo ->
-                                toDo.title.lowercase().contains(it.toString().lowercase())
-                            })
-                        }
-                } else {
-                    (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
-                        .observe(viewLifecycleOwner) { list ->
-                            toDoAdapter.setData(list)
-                        }
+    private fun setupToolbar() {
+        binding.apply {
+            toolbar.title = "My To Do List"
+            toolbar.inflateMenu(R.menu.menu_main)
+            setActionSearchToDo(toolbar.menu)
+            setOnMenuItemClickListener(toolbar)
+        }
+    }
+
+    private fun setOnMenuItemClickListener(toolbar: MaterialToolbar) {
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_search -> {
+                    Log.i(TAG, "setOnMenuItemClickListener: search")
+                    true
                 }
+                R.id.action_settings -> {
+                    Log.i(TAG, "setOnMenuItemClickListener: setting")
+                    true
+                }
+                else -> false
             }
-
-
-//        (requireActivity() as MainActivity).toDoViewModel.getAllToDoWithGroup("First").observe(viewLifecycleOwner) {
-//            toDoAdapter.setData(it[0].todos)
-//            Log.i("HomeFragment", "onViewCreated: $it")
-//        }
-
-
-        binding.fabAdd.setOnClickListener {
-            onDestroyActionMode(actionMode)
-            (requireActivity() as MainActivity).toDoViewModel.goToAddToDoFragment(it)
         }
     }
 
@@ -122,86 +136,27 @@ class HomeFragment : Fragment(), ActionMode.Callback {
         }
     }
 
-    private fun setOptionsMenu() {
-        // The usage of an interface lets you inject your own implementation
-
-        val menuHost: MenuHost = requireActivity()
-
-        // Add menu items without using the Fragment Menu APIs
-        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-        // the menu should be visible
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
-                Log.i("HomeFragment", "onCreateMenu")
-                menuInflater.inflate(R.menu.menu_main, menu)
-                actionSearchToDo(menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_search -> {
-                        true
-                    }
-                    R.id.action_settings -> {
-                        true
-                    }
-                    androidx.appcompat.R.id.home -> {
-                        Snackbar.make(
-                            binding.root,
-                            "Home button clicked",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun actionSearchToDo(menu: Menu) {
+    private fun setActionSearchToDo(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        if (searchQuery != "") {
-            Log.i("HomeFragment", "actionSearchToDo: $searchQuery")
-            searchItem.expandActionView()
-            searchView.setQuery(searchQuery, false)
-            searchView.clearFocus()
-        }
-
-/*        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                Snackbar.make(
-                    binding.root,
-                    "Search1 button clicked",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                return true
-            }
-        })*/
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (!isOnDestroyView)
-                    (requireActivity() as MainActivity).toDoViewModel.savedStateHandle["search"] =
-                        newText
-                return false
-            }
-        })
+        searchView.setOnQueryTextListener(this@HomeFragment)
     }
 
-    private fun setupUiComponents() {
-        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment =
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        (requireActivity() as MainActivity).toDoViewModel.getAllToDo().observe(viewLifecycleOwner) {
+            toDoAdapter.setData(it.filter { toDo ->
+                toDo.title.lowercase().contains(newText.toString().lowercase())
+            })
+        }
+        return true
+    }
+
+    private fun setupSelectionTrackerAdapter() {
+        selectionTracker =
             SelectionTracker.Builder(
                 "selectionItem",
                 binding.recyclerView,
@@ -212,7 +167,7 @@ class HomeFragment : Fragment(), ActionMode.Callback {
                 SelectionPredicates.createSelectAnything()
             ).build()
 
-        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.addObserver(
+        selectionTracker.addObserver(
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
@@ -222,8 +177,7 @@ class HomeFragment : Fragment(), ActionMode.Callback {
                         Log.i("HomeFragment", "onSelectionChanged: ")
                     }
 
-                    val items =
-                        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.selection.size()
+                    val items = selectionTracker.selection.size()
                     if (items > 0) {
                         actionMode?.title = "$items selected"
                     } else {
@@ -231,35 +185,29 @@ class HomeFragment : Fragment(), ActionMode.Callback {
                     }
                 }
             })
-
-        toDoAdapter.tracker =
-            (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment
-
+        toDoAdapter.tracker = selectionTracker
     }
 
-
-    // Save the state of the tracker if the activity is destroyed or recreated
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.i("HomeFragment", "onSaveInstanceState:")
-        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.onSaveInstanceState(
-            outState
-        )
+
+        // Save the state of the tracker if the activity is destroyed or recreated
+        if (isViewCreated) {
+            selectionTracker.onSaveInstanceState(outState)
+        }
     }
 
-    // Restore the state of the tracker if the activity is destroyed or recreated
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        Log.i("HomeFragment", "onViewStateRestored: ")
         super.onViewStateRestored(savedInstanceState)
 
-        Log.i("HomeFragment", "onViewStateRestored: ")
-        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.onRestoreInstanceState(
-            savedInstanceState
-        )
-        if ((requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.hasSelection()) {
+        // Restore the state of the tracker if the activity is destroyed or recreated
+        selectionTracker.onRestoreInstanceState(savedInstanceState)
+        if (selectionTracker.hasSelection()) {
             actionMode =
                 (requireActivity() as MainActivity).startSupportActionMode(this@HomeFragment)
             actionMode?.title =
-                "${(requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.selection.size()} selected"
+                "${selectionTracker.selection.size()} selected"
         }
     }
 
@@ -279,9 +227,7 @@ class HomeFragment : Fragment(), ActionMode.Callback {
         return when (item?.itemId) {
             R.id.action_delete -> {
                 val selected = toDoAdapter.dataList.filter {
-                    (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.selection.contains(
-                        it.id.toLong()
-                    )
+                    selectionTracker.selection.contains(it.id.toLong())
                 }.toMutableList()
 
                 selected.forEach {
@@ -300,7 +246,7 @@ class HomeFragment : Fragment(), ActionMode.Callback {
     override fun onDestroyActionMode(mode: ActionMode?) {
         Log.i("HomeFragment", "onDestroyActionMode: ")
         binding.fabAdd.show()
-        (requireActivity() as MainActivity).toDoViewModel.trackerAdapterHomeFragment.clearSelection()
+        selectionTracker.clearSelection()
         actionMode = null
     }
 }

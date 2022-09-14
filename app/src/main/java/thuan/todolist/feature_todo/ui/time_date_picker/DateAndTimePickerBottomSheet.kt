@@ -10,7 +10,7 @@ import thuan.todolist.MainActivity
 import thuan.todolist.databinding.BottomsheetDateAndTimeBinding
 import java.util.*
 
-class DateAndTimePickerBottomSheet :
+class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
     BottomSheetDialogFragment() {
     private lateinit var binding: BottomsheetDateAndTimeBinding
 
@@ -67,10 +67,10 @@ class DateAndTimePickerBottomSheet :
     private fun cancelButtonClicked() = this.dismiss()
 
     private fun okButtonClicked() {
-        (requireActivity() as MainActivity).toDoViewModel.savedStateHandle["timeAndDate"] =
-            getDate()
+        callback(getDate())
         this.dismiss()
     }
+
 
     private fun getDate(): String {
         val hour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

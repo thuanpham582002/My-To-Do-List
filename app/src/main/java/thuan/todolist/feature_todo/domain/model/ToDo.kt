@@ -1,11 +1,12 @@
 package thuan.todolist.feature_todo.domain.model
 
-import android.content.ClipDescription
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 @Entity(tableName = "todo_table")
 data class ToDo(
     @PrimaryKey(autoGenerate = true)
@@ -20,4 +21,6 @@ data class ToDo(
     val isCompleted: Boolean,
     @ColumnInfo(name = "group_name")
     val groupName: String
-)
+) : Parcelable
+
+class InvalidToDoException(message: String) : Exception(message)

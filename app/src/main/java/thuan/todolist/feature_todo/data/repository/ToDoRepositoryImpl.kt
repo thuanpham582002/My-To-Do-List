@@ -23,7 +23,6 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         dao.deleteToDoById(toDo)
     }
 
-
     override suspend fun insertToDo(toDo: ToDo) {
         dao.insertToDo(toDo)
     }

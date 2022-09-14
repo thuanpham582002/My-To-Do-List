@@ -9,11 +9,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import thuan.todolist.databinding.ActivityMainBinding
-import thuan.todolist.feature_todo.di.Injection
-import thuan.todolist.feature_todo.viewmodel.ToDoViewModel
-import thuan.todolist.feature_todo.viewmodel.ToDoViewModelFactory
+import thuan.todolist.di.Injection
+import thuan.todolist.feature_todo.ui.home.ToDoViewModel
+import thuan.todolist.feature_todo.ui.home.ToDoViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,19 +24,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.i("MainActivity", "onCreate")
 
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        val toDoRepositoryImpl = Injection.provideToDoRepository(this)
-        val viewModelFactory = ToDoViewModelFactory.getInstance(toDoRepositoryImpl)
-        toDoViewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+        val toDoRepositoryImpl = Injection.provideToDoRepository(this)
+        val viewModelFactory = ToDoViewModelFactory.getInstance(toDoRepositoryImpl)
+
+        toDoViewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
         val navController =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
                 .findNavController()
         appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
 

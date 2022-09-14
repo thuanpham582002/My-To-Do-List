@@ -7,15 +7,18 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="thuan.todolist.feature_todo.ui.home.HomeFragment"
-        android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_addFragment"
-            app:destination="@id/addFragment" />
+            app:destination="@id/addAndEditFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addFragment"
-        android:name="thuan.todolist.feature_todo.ui.add.AddFragment"
-        android:label="AddFragment"
-        tools:layout="@layout/fragment_add"/>
+        android:id="@+id/addAndEditFragment"
+        android:name="thuan.todolist.feature_todo.ui.add_edit_todo.AddAndEditFragment"
+        tools:layout="@layout/fragment_add_edit">
+        <argument
+            android:name="todo"
+            app:argType="thuan.todolist.feature_todo.domain.model.ToDo"
+            app:nullable="true" />
+    </fragment>
 </navigation>
