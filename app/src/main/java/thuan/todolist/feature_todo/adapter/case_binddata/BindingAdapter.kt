@@ -1,12 +1,9 @@
 package thuan.todolist.feature_todo.adapter.case_binddata
 
-import android.util.Log
 import android.widget.CheckBox
 import androidx.databinding.BindingAdapter
 import com.google.android.material.card.MaterialCardView
 import thuan.todolist.feature_todo.domain.model.ToDo
-import thuan.todolist.feature_todo.ui.home.HomeFragment
-import thuan.todolist.feature_todo.ui.home.HomeFragmentDirections
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 
 

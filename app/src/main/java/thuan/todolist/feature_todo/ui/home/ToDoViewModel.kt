@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import kotlinx.coroutines.launch
+import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.data.repository.ToDoRepository
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.GroupWithToDos
@@ -13,6 +14,8 @@ import thuan.todolist.feature_todo.domain.model.ToDo
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
     private val savedStateHandle = SavedStateHandle()
+    private val toDoUseCases = Injection.provideToDoUseCases(toDoRepository)
+
     val defaultTodo = ToDo(
         id = -1,
         title = "",

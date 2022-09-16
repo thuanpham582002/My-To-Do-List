@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -16,9 +17,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import thuan.todolist.MainActivity
 import thuan.todolist.R
 import thuan.todolist.databinding.FragmentHomeBinding
+import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.adapter.case_todo.ToDoAdapter
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
+import thuan.todolist.feature_todo.domain.use_case.GetToDos
 
 const val TAG = "HomeFragment"
 
@@ -29,6 +32,8 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     lateinit var selectionTracker: SelectionTracker<Long>
     private var actionMode: ActionMode? = null
     private var isViewCreated = false
+    private lateinit var viewModel: ToDoViewModel
+    private lateinit var getToDos: GetToDos
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,27 +49,33 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         super.onViewCreated(view, savedInstanceState)
         isViewCreated = true
         Log.i("HomeFragment", "onViewCreated")
-        toDoAdapter = ToDoAdapter((requireActivity() as MainActivity).toDoViewModel)
+        setupViewModel()
         setupToolbar()
         setupSpinnerGroup()
         setupRecyclerview()
         setupSelectionTrackerAdapter()
 
-        (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
-            .observe(viewLifecycleOwner) { list ->
-                toDoAdapter.setData(list)
-            }
+        getToDos().observe(viewLifecycleOwner) { list ->
+            toDoAdapter.setData(list)
+        }
 
-        //        (requireActivity() as MainActivity).toDoViewModel.getAllToDoWithGroup("First").observe(viewLifecycleOwner) {
+        //        viewModel.getAllToDoWithGroup("First").observe(viewLifecycleOwner) {
 //            toDoAdapter.setData(it[0].todos)
 //            Log.i("HomeFragment", "onViewCreated: $it")
 //        }
         binding.fabAdd.setOnClickListener {
             onDestroyActionMode(actionMode)
-            (requireActivity() as MainActivity).toDoViewModel.apply {
+            viewModel.apply {
                 goToAddAndEditToDoFragment(it, defaultTodo)
             }
         }
+    }
+
+    private fun setupViewModel() {
+        val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
+        getToDos = GetToDos(toDoRepositoryImpl)
+        val viewModelFactory = ToDoViewModelFactory(toDoRepositoryImpl)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
     }
 
     private fun setupSpinnerGroup() {
@@ -79,19 +90,19 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         when (p2) {
             0 -> {
-                (requireActivity() as MainActivity).toDoViewModel.getAllToDo()
+                viewModel.getAllToDo()
                     .observe(viewLifecycleOwner) { list ->
                         toDoAdapter.setData(list)
                     }
             }
 //            1 -> {
-//                (requireActivity() as MainActivity).toDoViewModel.getAllCompletedToDo()
+//                viewModel.getAllCompletedToDo()
 //                    .observe(viewLifecycleOwner) { list ->
 //                        toDoAdapter.setData(list)
 //                    }
 //            }
 //            2 -> {
-//                (requireActivity() as MainActivity).toDoViewModel.getAllUncompletedToDo()
+//                viewModel.getAllUncompletedToDo()
 //                    .observe(viewLifecycleOwner) { list ->
 //                        toDoAdapter.setData(list)
 //                    }
@@ -130,6 +141,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     private fun setupRecyclerview() {
+        toDoAdapter = ToDoAdapter(viewModel)
         with(binding.recyclerView) {
             adapter = toDoAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -147,7 +159,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        (requireActivity() as MainActivity).toDoViewModel.getAllToDo().observe(viewLifecycleOwner) {
+        viewModel.getAllToDo().observe(viewLifecycleOwner) {
             toDoAdapter.setData(it.filter { toDo ->
                 toDo.title.lowercase().contains(newText.toString().lowercase())
             })
@@ -231,7 +243,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
                 }.toMutableList()
 
                 selected.forEach {
-                    (requireActivity() as MainActivity).toDoViewModel.deleteToDo(it)
+                    viewModel.deleteToDo(it)
                 }
 
                 actionMode?.finish()

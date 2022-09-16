@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.databinding.FragmentAddEditBinding
 import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.model.GroupToDo
@@ -45,6 +45,7 @@ class AddAndEditFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,6 +54,18 @@ class AddAndEditFragment : Fragment() {
         setupListPopUpGroup()
         setDefaultData()
         onUIClick()
+
+        viewModel.latestState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AddEditToDoViewModel.UIEvent.ShowSnackBar -> {
+                    showSnackBar(state.message)
+                }
+                is AddEditToDoViewModel.UIEvent.SaveToDoSuccess -> {
+                    showSnackBar(state.message)
+                    requireActivity().onBackPressed()
+                }
+            }
+        }
     }
 
     private fun setupViewModel() {
@@ -118,7 +131,7 @@ class AddAndEditFragment : Fragment() {
 
             btnAddGroup.setOnClickListener {
                 DialogAddGroup.show(requireContext()) { groupName ->
-                    viewModel.insertGroup(GroupToDo(name = groupName))
+                    viewModel.onEvent(AddEditToDoEvent.SaveGroup(groupName))
                 }
                 Log.i(TAG, "onUIClick: btnAddGroup")
             }
@@ -150,12 +163,7 @@ class AddAndEditFragment : Fragment() {
             if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
                 DialogQuitWithOutSaving.show(requireContext()) {
                     viewModel.onEvent(
-                        AddEditToDoEvent.SaveToDo(
-                            { message ->
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            }, {
-                                requireActivity().onBackPressed()
-                            })
+                        AddEditToDoEvent.SaveToDo
                     )
                 }
             } else {
@@ -169,12 +177,7 @@ class AddAndEditFragment : Fragment() {
             when (it.itemId) {
                 thuan.todolist.R.id.action_save -> {
                     viewModel.onEvent(
-                        AddEditToDoEvent.SaveToDo(
-                            { message ->
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            }, {
-                                requireActivity().onBackPressed()
-                            })
+                        AddEditToDoEvent.SaveToDo
                     )
                     true
                 }
@@ -207,5 +210,9 @@ class AddAndEditFragment : Fragment() {
                 listPopUpGroup.dismiss()
             }
         }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }

@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    lateinit var toDoViewModel: ToDoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +26,7 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val toDoRepositoryImpl = Injection.provideToDoRepository(this)
-        val viewModelFactory = ToDoViewModelFactory.getInstance(toDoRepositoryImpl)
 
-        toDoViewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
         val navController =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
                 .findNavController()
@@ -73,5 +69,4 @@ class MainActivity : AppCompatActivity() {
         super.onRestart()
         Log.i("MainActivity", "onRestart")
     }
-
 }

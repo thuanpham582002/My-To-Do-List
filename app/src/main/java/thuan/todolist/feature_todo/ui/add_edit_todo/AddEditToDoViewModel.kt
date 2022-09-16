@@ -2,12 +2,17 @@ package thuan.todolist.feature_todo.ui.add_edit_todo
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.data.repository.ToDoRepository
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.ToDo
 
 class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private val toDo: ToDo?) :
     ViewModel() {
+    private val toDoUseCases = Injection.provideToDoUseCases(toDoRepository)
+
+    val latestState = MutableLiveData<UIEvent>()
+
     val todoTitle = MutableLiveData("")
 
     val todoDescription = MutableLiveData("")
@@ -52,47 +57,57 @@ class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private v
                 groupName.value = event.groupName
             }
 
+            is AddEditToDoEvent.SaveGroup -> {
+                viewModelScope.launch {
+                    toDoUseCases.addGroup(GroupToDo(name = event.groupName))
+                    latestState.value = UIEvent.ShowSnackBar("Group added")
+                }
+            }
+
             is AddEditToDoEvent.SaveToDo -> {
-                saveToDo(event.toastCallBack, event.pressBackCallBack)
+                saveToDo()
             }
         }
     }
 
-    private fun saveToDo(toastCallBack: (String) -> Unit, pressBackCallBack: () -> Unit) {
+    private fun saveToDo() {
         val title = todoTitle.value
         val description = todoDescription.value
         val dateAndTime = todoDateAndTime.value
         val groupName = groupName.value
         if (title.toString().isEmpty()) {
-            toastCallBack("Title cannot be empty")
+            latestState.value = UIEvent.ShowSnackBar("Title cannot be empty")
             return
         }
+
         if (toDo!!.id == -1) {
-            insertToDo(
-                ToDo(
-                    id = 0,
-                    title = title.toString(),
-                    description = description.toString(),
-                    dateAndTime = dateAndTime.toString(),
-                    isCompleted = false,
-                    groupName = groupName.toString()
+            viewModelScope.launch {
+                toDoUseCases.addToDo(
+                    ToDo(
+                        id = 0,
+                        title = title.toString(),
+                        description = description.toString(),
+                        dateAndTime = dateAndTime.toString(),
+                        isCompleted = false,
+                        groupName = groupName.toString()
+                    )
                 )
-            )
-            pressBackCallBack()
-            toastCallBack("ToDo added")
+            }
+            latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
         } else {
-            updateToDo(
-                ToDo(
-                    id = toDo.id,
-                    title = title.toString(),
-                    description = description.toString(),
-                    dateAndTime = dateAndTime.toString(),
-                    isCompleted = toDo.isCompleted,
-                    groupName = groupName.toString()
+            viewModelScope.launch {
+                toDoUseCases.updateToDo(
+                    ToDo(
+                        id = toDo.id,
+                        title = title.toString(),
+                        description = description.toString(),
+                        dateAndTime = dateAndTime.toString(),
+                        isCompleted = toDo.isCompleted,
+                        groupName = groupName.toString()
+                    )
                 )
-            )
-            pressBackCallBack()
-            toastCallBack("ToDo updated")
+            }
+            latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
         }
     }
 
@@ -106,13 +121,9 @@ class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private v
         }
     }
 
-    private fun insertToDo(toDo: ToDo) = viewModelScope.launch {
-        toDoRepository.insertToDo(toDo)
-    }
-
-
-    private fun updateToDo(toDo: ToDo) = viewModelScope.launch {
-        toDoRepository.updateToDo(toDo)
+    sealed class UIEvent {
+        data class ShowSnackBar(val message: String) : UIEvent()
+        data class SaveToDoSuccess(val message: String) : UIEvent()
     }
 
 }
