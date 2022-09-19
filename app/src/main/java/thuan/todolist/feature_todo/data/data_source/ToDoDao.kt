@@ -13,7 +13,7 @@ interface ToDoDao {
     fun getAllToDo(): LiveData<List<ToDo>>
 
     @Query("SELECT * FROM group_todo_table WHERE group_name = :groupName")
-    fun getAllToDoWithGroup(groupName: String): LiveData<List<GroupWithToDos>>
+    fun getAllToDoWithGroup(groupName: String): LiveData<GroupWithToDos>
 
     @Query("SELECT * FROM group_todo_table")
     fun getAllGroup(): LiveData<List<GroupToDo>>

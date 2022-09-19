@@ -1,6 +1,10 @@
 package thuan.todolist.feature_todo.domain.util
 
-sealed class ToDoOrder(orderType: OrderType) {
-    class Title(orderType: OrderType) : ToDoOrder(orderType)
-    class Date(orderType: OrderType) : ToDoOrder(orderType)
+sealed interface ToDoOrder {
+    data class Order(
+        val todoType: ToDoType = ToDoType.All,
+        val groupType: GroupType = GroupType.All,
+        val todoTagType: ToDoTagType = ToDoTagType.None,
+        val orderType: OrderType = OrderType.Ascending
+    ) : ToDoOrder
 }

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
@@ -22,11 +23,16 @@ import thuan.todolist.feature_todo.adapter.case_todo.ToDoAdapter
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
 import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
 import thuan.todolist.feature_todo.domain.use_case.GetToDos
+import thuan.todolist.feature_todo.domain.util.GroupType
+import thuan.todolist.feature_todo.domain.util.OrderType
+import thuan.todolist.feature_todo.domain.util.ToDoTagType
+import thuan.todolist.feature_todo.domain.util.ToDoType
 
 const val TAG = "HomeFragment"
 
 class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextListener,
     AdapterView.OnItemSelectedListener {
+    private lateinit var searchView: SearchView
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toDoAdapter: ToDoAdapter
     lateinit var selectionTracker: SelectionTracker<Long>
@@ -48,26 +54,71 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isViewCreated = true
-        Log.i("HomeFragment", "onViewCreated")
         setupViewModel()
         setupToolbar()
         setupSpinnerGroup()
         setupRecyclerview()
         setupSelectionTrackerAdapter()
+        onUIClick()
+//        subscribeToObservers()
 
-        getToDos().observe(viewLifecycleOwner) { list ->
-            toDoAdapter.setData(list)
+        viewModel.toDoOrder.observe(viewLifecycleOwner) { order ->
+//            Transformations.map(getToDos(order)) {   // Transformations.map() is not working
+//                viewModel.listTodo.value = it
+//            }
+            getToDos(order).observe(viewLifecycleOwner) {
+                viewModel.listTodo.value = it
+            }
         }
 
-        //        viewModel.getAllToDoWithGroup("First").observe(viewLifecycleOwner) {
-//            toDoAdapter.setData(it[0].todos)
-//            Log.i("HomeFragment", "onViewCreated: $it")
-//        }
+        viewModel.listTodo.observe(viewLifecycleOwner) {
+            Log.i(TAG, "onViewCreated: ")
+            toDoAdapter.setData(it)
+        }
+    }
+
+    private fun onUIClick() {
         binding.fabAdd.setOnClickListener {
             onDestroyActionMode(actionMode)
             viewModel.apply {
                 goToAddAndEditToDoFragment(it, defaultTodo)
             }
+        }
+
+        binding.btnOrder.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(GroupType.Custom("Default")))
+        }
+
+        binding.rbDate.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoTagType.Date))
+        }
+
+        binding.rbTitle.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoTagType.Title))
+        }
+
+        binding.rbNone.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoTagType.None))
+        }
+
+        binding.rbAsc.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(OrderType.Ascending))
+        }
+
+        binding.rbDesc.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(OrderType.Descending))
+        }
+
+        binding.rbTodoAll.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoType.All))
+        }
+
+        binding.rbTodoCompleted.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoType.Completed))
+        }
+
+        binding.rbTodoUncompleted.setOnClickListener {
+            viewModel.onEvent(ToDosEvent.Order(ToDoType.Uncompleted))
         }
     }
 
@@ -88,13 +139,13 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        when (p2) {
-            0 -> {
-                viewModel.getAllToDo()
-                    .observe(viewLifecycleOwner) { list ->
-                        toDoAdapter.setData(list)
-                    }
-            }
+//        when (p2) {
+//            0 -> {
+//                viewModel.getAllToDo()
+//                    .observe(viewLifecycleOwner) { list ->
+//                        toDoAdapter.setData(list)
+//                    }
+//            }
 //            1 -> {
 //                viewModel.getAllCompletedToDo()
 //                    .observe(viewLifecycleOwner) { list ->
@@ -108,7 +159,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 //                    }
 //            }
 //
-        }
+//    }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -145,12 +196,15 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         with(binding.recyclerView) {
             adapter = toDoAdapter
             layoutManager = LinearLayoutManager(requireContext())
+//            FastScrollerBuilder(this).build()
         }
     }
 
     private fun setActionSearchToDo(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        searchView = searchItem.actionView as SearchView
+        searchView.queryHint = "Search To Do"
+        Log.i(TAG, "setActionSearchToDo: ${searchView.query}")
         searchView.setOnQueryTextListener(this@HomeFragment)
     }
 
@@ -159,7 +213,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        viewModel.getAllToDo().observe(viewLifecycleOwner) {
+        viewModel.listTodo.observe(viewLifecycleOwner) {
             toDoAdapter.setData(it.filter { toDo ->
                 toDo.title.lowercase().contains(newText.toString().lowercase())
             })
@@ -202,7 +256,6 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         // Save the state of the tracker if the activity is destroyed or recreated
         if (isViewCreated) {
             selectionTracker.onSaveInstanceState(outState)
@@ -243,9 +296,8 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
                 }.toMutableList()
 
                 selected.forEach {
-                    viewModel.deleteToDo(it)
+                    viewModel.onEvent(ToDosEvent.DeleteToDo(it))
                 }
-
                 actionMode?.finish()
                 true
             }

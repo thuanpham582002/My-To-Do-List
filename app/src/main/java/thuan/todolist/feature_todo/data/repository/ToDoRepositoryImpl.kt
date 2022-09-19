@@ -11,7 +11,7 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getAllToDo()
     }
 
-    override fun getAllToDoWithGroup(groupName : String): LiveData<List<GroupWithToDos>> {
+    override fun getAllToDoWithGroup(groupName : String): LiveData<GroupWithToDos> {
         return dao.getAllToDoWithGroup(groupName)
     }
 

@@ -18,9 +18,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:id="@+id/cv_group"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/cardview_color"
             app:cardCornerRadius="8dp"
@@ -32,13 +32,147 @@
             <Spinner
                 android:id="@+id/spinner_group"
                 style="@style/Widget.AppCompat.Spinner.DropDown"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.9"
                 android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
 
+            <ImageButton
+                android:id="@+id/btn_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:contentDescription="order"
+                android:src="@drawable/ic_delete" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_group">
+
+            <RadioGroup
+                android:id="@+id/radioGroup_tag_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/none"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/title"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/date"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radioGroup_todo_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radioGroup_tag_order"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_todo_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/all"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_todo_completed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/completed"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_todo_uncompleted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/uncompleted"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </RadioGroup>
+
+
+            <RadioGroup
+                android:id="@+id/radioGroup_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radioGroup_todo_order"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_asc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/ascending"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/descending"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </RadioGroup>
+
+
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -47,7 +181,7 @@
             android:paddingStart="@dimen/fab_margin"
             android:paddingEnd="@dimen/fab_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cv_group"
+            app:layout_constraintTop_toBottomOf="@+id/rl_order"
             tools:listitem="@layout/item_todo" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

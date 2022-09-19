@@ -10,12 +10,14 @@ import thuan.todolist.feature_todo.data.repository.ToDoRepository
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.GroupWithToDos
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.domain.util.*
 
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
     private val savedStateHandle = SavedStateHandle()
     private val toDoUseCases = Injection.provideToDoUseCases(toDoRepository)
-
+    var listTodo = MutableLiveData<List<ToDo>>()
+    var toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
     val defaultTodo = ToDo(
         id = -1,
         title = "",
@@ -31,31 +33,54 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
             .navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment(toDo))
     }
 
-    fun getAllToDo(): LiveData<List<ToDo>> =
-        toDoRepository.getAllToDo()
+    fun onEvent(event: ToDosEvent) {
+        when (event) {
+            is ToDosEvent.DeleteToDo -> {
+                viewModelScope.launch {
+                    toDoUseCases.deleteToDo(event.toDo)
+                }
+            }
 
-    fun getAllToDoWithGroup(groupName: String): LiveData<List<GroupWithToDos>> =
-        toDoRepository.getAllToDoWithGroup(groupName)
+            is ToDosEvent.UpdateToDo -> {
+                viewModelScope.launch {
+                    toDoUseCases.updateToDo(event.toDo)
+                }
+            }
 
-    fun getAllGroup(): LiveData<List<GroupToDo>> =
-        toDoRepository.getAllGroup()
+            is ToDosEvent.Order -> {
+                when (event.toDoOrder) {
+                    is GroupType -> {
+                        toDoOrder.value = toDoOrder.value?.copy(
+                            groupType = event.toDoOrder
+                        )
+                    }
+                    is OrderType -> {
+                        toDoOrder.value = toDoOrder.value?.copy(
+                            orderType = event.toDoOrder
+                        )
+                    }
 
+                    is ToDoType -> {
+                        toDoOrder.value = toDoOrder.value?.copy(
+                            todoType = event.toDoOrder
+                        )
+                    }
 
-    fun insertToDo(toDo: ToDo) = viewModelScope.launch {
-        toDoRepository.insertToDo(toDo)
+                    is ToDoTagType -> {
+                        toDoOrder.value = toDoOrder.value?.copy(
+                            todoTagType = event.toDoOrder
+                        )
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
-    fun insertGroup(group: GroupToDo) = viewModelScope.launch {
-        toDoRepository.insertGroup(group)
-    }
-
-    fun deleteToDo(toDo: ToDo) = viewModelScope.launch {
-        toDoRepository.deleteToDo(toDo)
-    }
-
-    fun updateToDo(toDo: ToDo) = viewModelScope.launch {
-        toDoRepository.updateToDo(toDo)
-    }
+//    fun updateToDo(toDo: ToDo) = viewModelScope.launch {
+//        toDoRepository.updateToDo(toDo)
+//    }
 
 }
 

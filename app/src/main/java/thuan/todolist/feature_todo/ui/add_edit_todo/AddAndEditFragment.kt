@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.databinding.FragmentAddEditBinding
 import thuan.todolist.di.Injection
@@ -44,7 +43,6 @@ class AddAndEditFragment : Fragment() {
         binding = FragmentAddEditBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -135,6 +133,8 @@ class AddAndEditFragment : Fragment() {
                 }
                 Log.i(TAG, "onUIClick: btnAddGroup")
             }
+
+            onClickToolBar()
         }
     }
 
@@ -151,15 +151,13 @@ class AddAndEditFragment : Fragment() {
         binding.apply {
             toolbar.title = "My To Do"
             binding.toolbar.inflateMenu(thuan.todolist.R.menu.menu_save)
-            setOnMenuItemClickListener(toolbar)
             // display back button
             toolbar.setNavigationIcon(thuan.todolist.R.drawable.ic_close)
-            setNavigationOnClickListener(toolbar)
         }
     }
 
-    private fun setNavigationOnClickListener(toolbar: MaterialToolbar) {
-        toolbar.setNavigationOnClickListener {
+    private fun onClickToolBar() {
+        binding.toolbar.setNavigationOnClickListener {
             if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
                 DialogQuitWithOutSaving.show(requireContext()) {
                     viewModel.onEvent(
@@ -170,10 +168,7 @@ class AddAndEditFragment : Fragment() {
                 requireActivity().onBackPressed()
             }
         }
-    }
-
-    private fun setOnMenuItemClickListener(toolbar: MaterialToolbar) {
-        toolbar.setOnMenuItemClickListener {
+        binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 thuan.todolist.R.id.action_save -> {
                     viewModel.onEvent(

@@ -5,6 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.card.MaterialCardView
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
+import thuan.todolist.feature_todo.ui.home.ToDosEvent
 
 
 @BindingAdapter(value = ["todo", "viewModel"])
@@ -20,27 +21,9 @@ fun isChecking(checkBox: CheckBox, toDo: ToDo, viewModel: ToDoViewModel) {
     checkBox.isChecked = toDo.isCompleted
     checkBox.setOnCheckedChangeListener { _, b ->
         if (b) {
-            viewModel.updateToDo(
-                ToDo(
-                    id = toDo.id,
-                    title = toDo.title,
-                    description = toDo.description,
-                    dateAndTime = toDo.dateAndTime,
-                    isCompleted = true,
-                    groupName = toDo.groupName
-                )
-            )
+            viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = true)))
         } else {
-            viewModel.updateToDo(
-                ToDo(
-                    id = toDo.id,
-                    title = toDo.title,
-                    description = toDo.description,
-                    dateAndTime = toDo.dateAndTime,
-                    isCompleted = false,
-                    groupName = toDo.groupName
-                )
-            )
+            viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = false)))
         }
     }
 }

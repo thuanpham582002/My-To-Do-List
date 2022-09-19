@@ -44,7 +44,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_group"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/cardview_color"
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
@@ -53,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/etTitle"
             app:strokeWidth="1dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -63,31 +63,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="0.9"
                     android:background="@color/cardview_color"
-                    android:minHeight="48dp"
-                    android:paddingEnd="48dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="RtlSymmetry" />
+                    android:minHeight="48dp" />
 
 
                 <ImageButton
                     android:id="@+id/btn_add_group"
                     android:layout_width="wrap_content"
-                    android:layout_height="?actionBarSize"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_weight="0.1"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/add_group"
+                    android:minWidth="48dp"
                     android:minHeight="48dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_playlist_add"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/tvGroup"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:src="@drawable/ic_playlist_add" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
