@@ -1,23 +1,23 @@
 package thuan.todolist.feature_todo.ui.home
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.*
-import androidx.navigation.findNavController
 import kotlinx.coroutines.launch
 import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.data.repository.ToDoRepository
-import thuan.todolist.feature_todo.domain.model.GroupToDo
-import thuan.todolist.feature_todo.domain.model.GroupWithToDos
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 import thuan.todolist.feature_todo.domain.util.*
 
 
-class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
+class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
     private val savedStateHandle = SavedStateHandle()
-    private val toDoUseCases = Injection.provideToDoUseCases(toDoRepository)
-    var listTodo = MutableLiveData<List<ToDo>>()
-    var toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
+    val toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
+    var listTodo: LiveData<List<ToDo>> = Transformations.switchMap(toDoOrder) { order ->
+        Log.i(TAG, ": track to do")
+        toDoUseCases.getToDos(order)
+    }
+
     val defaultTodo = ToDo(
         id = -1,
         title = "",
@@ -26,12 +26,6 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
         isCompleted = false,
         groupName = "Default"
     )
-
-    fun goToAddAndEditToDoFragment(view: View, toDo: ToDo) {
-        Log.i("Viewmodel", "goToAddAndEditToDoFragment: $toDo")
-        view.findNavController()
-            .navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment(toDo))
-    }
 
     fun onEvent(event: ToDosEvent) {
         when (event) {
@@ -72,32 +66,35 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : ViewModel() {
                         )
                     }
 
-                    else -> {}
+                    is SearchOrder -> {
+                        toDoOrder.value = toDoOrder.value?.copy(
+                            searchOrder = event.toDoOrder
+                        )
+                    }
+
+                    is ToDoOrder.Order -> {
+                    }
                 }
             }
         }
     }
-
-//    fun updateToDo(toDo: ToDo) = viewModelScope.launch {
-//        toDoRepository.updateToDo(toDo)
-//    }
-
 }
 
-class ToDoViewModelFactory(private val toDoRepository: ToDoRepository) :
+@Suppress("UNCHECKED_CAST")
+class ToDoViewModelFactory(private val toDoUseCases: ToDoUseCases) :
     ViewModelProvider.NewInstanceFactory() {
 
     companion object {
         @Volatile
         private var instance: ToDoViewModelFactory? = null
 
-        fun getInstance(toDoRepository: ToDoRepository): ToDoViewModelFactory =
+        fun getInstance(toDoUseCases: ToDoUseCases): ToDoViewModelFactory =
             instance ?: synchronized(this) {
-                ToDoViewModelFactory(toDoRepository).apply { instance = this }
+                ToDoViewModelFactory(toDoUseCases).apply { instance = this }
             }
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ToDoViewModel(toDoRepository) as T
+        return ToDoViewModel(toDoUseCases) as T
     }
 }

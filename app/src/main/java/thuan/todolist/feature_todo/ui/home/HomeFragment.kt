@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -19,27 +19,22 @@ import thuan.todolist.MainActivity
 import thuan.todolist.R
 import thuan.todolist.databinding.FragmentHomeBinding
 import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.adapter.case_todo.ToDoAdapter
-import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
-import thuan.todolist.feature_todo.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
-import thuan.todolist.feature_todo.domain.use_case.GetToDos
-import thuan.todolist.feature_todo.domain.util.GroupType
-import thuan.todolist.feature_todo.domain.util.OrderType
-import thuan.todolist.feature_todo.domain.util.ToDoTagType
-import thuan.todolist.feature_todo.domain.util.ToDoType
+import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
+import thuan.todolist.feature_todo.domain.util.*
+import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.ToDoAdapter
+import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
+import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
 
 const val TAG = "HomeFragment"
 
 class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextListener,
     AdapterView.OnItemSelectedListener {
-    private lateinit var searchView: SearchView
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toDoAdapter: ToDoAdapter
     lateinit var selectionTracker: SelectionTracker<Long>
     private var actionMode: ActionMode? = null
     private var isViewCreated = false
     private lateinit var viewModel: ToDoViewModel
-    private lateinit var getToDos: GetToDos
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,19 +55,13 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         setupRecyclerview()
         setupSelectionTrackerAdapter()
         onUIClick()
-//        subscribeToObservers()
+        subscribeToObservers()
+    }
 
-        viewModel.toDoOrder.observe(viewLifecycleOwner) { order ->
-//            Transformations.map(getToDos(order)) {   // Transformations.map() is not working
-//                viewModel.listTodo.value = it
-//            }
-            getToDos(order).observe(viewLifecycleOwner) {
-                viewModel.listTodo.value = it
-            }
-        }
-
+    private fun subscribeToObservers() {
+        viewModel.toDoOrder.value = viewModel.toDoOrder.value
         viewModel.listTodo.observe(viewLifecycleOwner) {
-            Log.i(TAG, "onViewCreated: ")
+            Log.i(TAG, "onViewCreated: ${it.size}")
             toDoAdapter.setData(it)
         }
     }
@@ -80,9 +69,8 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     private fun onUIClick() {
         binding.fabAdd.setOnClickListener {
             onDestroyActionMode(actionMode)
-            viewModel.apply {
-                goToAddAndEditToDoFragment(it, defaultTodo)
-            }
+            it.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment(viewModel.defaultTodo))
         }
 
         binding.btnOrder.setOnClickListener {
@@ -124,8 +112,8 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     private fun setupViewModel() {
         val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
-        getToDos = GetToDos(toDoRepositoryImpl)
-        val viewModelFactory = ToDoViewModelFactory(toDoRepositoryImpl)
+        val viewModelFactory =
+            ToDoViewModelFactory(Injection.provideToDoUseCases(toDoRepositoryImpl))
         viewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
     }
 
@@ -202,7 +190,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     private fun setActionSearchToDo(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem.actionView as SearchView
+        val searchView = searchItem.actionView as SearchView
         searchView.queryHint = "Search To Do"
         Log.i(TAG, "setActionSearchToDo: ${searchView.query}")
         searchView.setOnQueryTextListener(this@HomeFragment)
@@ -212,12 +200,18 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         return false
     }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-        viewModel.listTodo.observe(viewLifecycleOwner) {
-            toDoAdapter.setData(it.filter { toDo ->
-                toDo.title.lowercase().contains(newText.toString().lowercase())
-            })
-        }
+    override fun onQueryTextChange(newText: String): Boolean {
+//        viewModel.searchTextQuery.value = newText
+//        viewModel.listTodo1.observe(viewLifecycleOwner) {
+//
+//        }
+        viewModel.onEvent(ToDosEvent.Order(SearchOrder(newText)))
+
+//        viewModel.listTodo.observe(viewLifecycleOwner) {
+//            toDoAdapter.setData(it.filter { toDo ->
+//                toDo.title.lowercase().contains(newText.toString().lowercase())
+//            })
+//        }
         return true
     }
 

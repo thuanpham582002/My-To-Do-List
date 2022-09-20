@@ -6,10 +6,10 @@ import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.data.repository.ToDoRepository
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 
-class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private val toDo: ToDo?) :
+class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
-    private val toDoUseCases = Injection.provideToDoUseCases(toDoRepository)
 
     val latestState = MutableLiveData<UIEvent>()
 
@@ -80,6 +80,10 @@ class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private v
             return
         }
 
+        viewModelScope.launch {
+            toDoUseCases.addGroup(GroupToDo(name = groupName.toString()))
+        }
+
         if (toDo!!.id == -1) {
             viewModelScope.launch {
                 toDoUseCases.addToDo(
@@ -112,39 +116,40 @@ class AddEditToDoViewModel(private val toDoRepository: ToDoRepository, private v
     }
 
     fun getGroupToDo(): LiveData<List<GroupToDo>> {
-        return toDoRepository.getAllGroup()
+        return toDoUseCases.getGroupsToDo()
     }
 
     fun insertGroup(groupToDo: GroupToDo) {
         viewModelScope.launch {
-            toDoRepository.insertGroup(groupToDo)
+            toDoUseCases.addGroup(groupToDo)
         }
     }
 
     sealed class UIEvent {
         data class ShowSnackBar(val message: String) : UIEvent()
         data class SaveToDoSuccess(val message: String) : UIEvent()
+        object None : UIEvent()
     }
 
 }
 
 @Suppress("UNCHECKED_CAST")
 class AddEditToDoViewModelFactory(
-    private val toDoRepository: ToDoRepository,
+    private val toDoUseCases: ToDoUseCases,
     private val toDo: ToDo?
 ) :
     ViewModelProvider.NewInstanceFactory() {
     companion object {
         fun getInstance(
-            toDoRepository: ToDoRepository,
+            toDoUseCases: ToDoUseCases,
             toDo: ToDo?
         ): AddEditToDoViewModelFactory =
-            synchronized(this) {
-                AddEditToDoViewModelFactory(toDoRepository, toDo)
+            synchronized(this) {   // synchronized: only one thread can access this block of code at a time
+                AddEditToDoViewModelFactory(toDoUseCases, toDo)
             }
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return AddEditToDoViewModel(toDoRepository, toDo) as T
+        return AddEditToDoViewModel(toDoUseCases, toDo) as T
     }
 }

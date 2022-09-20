@@ -57,19 +57,21 @@ class AddAndEditFragment : Fragment() {
             when (state) {
                 is AddEditToDoViewModel.UIEvent.ShowSnackBar -> {
                     showSnackBar(state.message)
+                    viewModel.latestState.value = AddEditToDoViewModel.UIEvent.None
                 }
                 is AddEditToDoViewModel.UIEvent.SaveToDoSuccess -> {
                     showSnackBar(state.message)
                     requireActivity().onBackPressed()
                 }
+                AddEditToDoViewModel.UIEvent.None -> {}
             }
         }
     }
 
     private fun setupViewModel() {
         val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
-        val viewModelFactory = AddEditToDoViewModelFactory.getInstance(
-            toDoRepositoryImpl,
+        val viewModelFactory = AddEditToDoViewModelFactory(
+            Injection.provideToDoUseCases(toDoRepositoryImpl),
             AddAndEditFragmentArgs.fromBundle(requireArguments()).todo
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[AddEditToDoViewModel::class.java]
@@ -85,10 +87,8 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
-
                 override fun afterTextChanged(s: Editable?) {
                     viewModel.onEvent(AddEditToDoEvent.EnteredTitle(s.toString()))
                 }
@@ -102,10 +102,8 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
-
                 override fun afterTextChanged(s: Editable?) {
                     if (s.toString().isNotEmpty()) {
                         viewModel.onEvent(AddEditToDoEvent.EnteredDescription(s.toString()))
@@ -116,6 +114,7 @@ class AddAndEditFragment : Fragment() {
             tvGroup.setOnClickListener {
                 listPopUpGroup.show()
             }
+
             tvTimeAndDate.setOnClickListener {
                 DateAndTimePickerBottomSheet {
                     tvTimeAndDate.text = it
@@ -187,6 +186,7 @@ class AddAndEditFragment : Fragment() {
             if ("Default" !in listGroup) {
                 Log.i(TAG, "setupListPopUpGroup:  Default not in listGroup")
                 listGroup = listOf("Default") + listGroup
+                viewModel.onEvent(AddEditToDoEvent.SaveGroup("Default"))
                 viewModel.insertGroup(GroupToDo(name = "Default"))
             }
 

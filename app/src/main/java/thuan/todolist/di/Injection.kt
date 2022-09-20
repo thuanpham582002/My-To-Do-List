@@ -17,6 +17,7 @@ object Injection {
     fun provideToDoUseCases(repository: ToDoRepository): ToDoUseCases {
         return ToDoUseCases(
             getToDos = GetToDos(repository),
+            getGroupsToDo = GetGroupsToDo(repository),
             addToDo = AddToDo(repository),
             addGroup = AddGroup(repository),
             updateToDo = UpdateToDo(repository),

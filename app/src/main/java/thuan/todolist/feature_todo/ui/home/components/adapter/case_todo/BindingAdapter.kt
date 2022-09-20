@@ -1,17 +1,20 @@
-package thuan.todolist.feature_todo.adapter.case_binddata
+package thuan.todolist.feature_todo.ui.home.components.adapter.case_todo
 
 import android.widget.CheckBox
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.ui.home.HomeFragmentDirections
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 import thuan.todolist.feature_todo.ui.home.ToDosEvent
 
 
-@BindingAdapter(value = ["todo", "viewModel"])
-fun goToEditFragment(materialCardView: MaterialCardView, toDo: ToDo, toDoViewModel: ToDoViewModel) {
+@BindingAdapter(value = ["todo"])
+fun goToEditFragment(materialCardView: MaterialCardView, toDo: ToDo) {
     materialCardView.setOnClickListener {
-        toDoViewModel.goToAddAndEditToDoFragment(it, toDo)
+        it.findNavController()
+            .navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment(toDo))
     }
 }
 

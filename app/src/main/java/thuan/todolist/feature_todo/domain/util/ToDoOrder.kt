@@ -5,6 +5,7 @@ sealed interface ToDoOrder {
         val todoType: ToDoType = ToDoType.All,
         val groupType: GroupType = GroupType.All,
         val todoTagType: ToDoTagType = ToDoTagType.None,
-        val orderType: OrderType = OrderType.Ascending
+        val orderType: OrderType = OrderType.Ascending,
+        val searchOrder: SearchOrder = SearchOrder("")
     ) : ToDoOrder
 }

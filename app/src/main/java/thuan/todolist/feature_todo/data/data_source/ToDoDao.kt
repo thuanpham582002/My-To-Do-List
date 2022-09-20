@@ -45,5 +45,4 @@ interface ToDoDao {
     @Transaction
     @Query("DELETE FROM todo_table WHERE todo_is_completed = 1")
     suspend fun deleteAllCompletedToDo()
-
 }
