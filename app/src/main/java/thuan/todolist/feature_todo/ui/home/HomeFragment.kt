@@ -270,7 +270,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         return when (item?.itemId) {
             R.id.action_delete -> {
                 val selected = toDoAdapter.dataList.filter {
-                    selectionTracker.selection.contains(it.id.toLong())
+                    selectionTracker.selection.contains(it.id)
                 }.toMutableList()
 
                 selected.forEach {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 object DialogAddGroup {

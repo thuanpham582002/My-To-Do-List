@@ -24,7 +24,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     val groupName = MutableLiveData("Default")
 
     init {
-        toDoId.value = toDo?.id?.toLong()
+        toDoId.value = toDo?.id
         todoTitle.value = toDo?.title
         todoDescription.value = toDo?.description
         todoDateAndTime.value = toDo?.dateAndTime
@@ -83,7 +83,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         val dateAndTime = todoDateAndTime.value
         val groupName = groupName.value
 
-        if (toDo!!.id == -1) {
+        if (toDo!!.id == -1L) {
             viewModelScope.launch {
                 try {
                     toDoId.value = toDoUseCases.addToDo(

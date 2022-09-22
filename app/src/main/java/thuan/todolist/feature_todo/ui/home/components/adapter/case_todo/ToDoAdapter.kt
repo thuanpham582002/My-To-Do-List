@@ -57,7 +57,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         }
 
         private fun checkItemSelection(todo: ToDo) {
-            if (tracker?.isSelected(todo.id.toLong()) == true) {
+            if (tracker?.isSelected(todo.id) == true) {
                 Log.i("adapter", "checkItemSelection: ")
                 binding.root.alpha = 0.5f
             } else {
@@ -72,7 +72,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         fun getToDoDetails(): ItemDetailsLookup.ItemDetails<Long> {
             return object : ItemDetailsLookup.ItemDetails<Long>() {
                 override fun getSelectionKey(): Long {
-                    return dataList[adapterPosition].id.toLong()
+                    return dataList[adapterPosition].id
                 }
 
                 override fun getPosition(): Int {
