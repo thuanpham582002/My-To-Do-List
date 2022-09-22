@@ -19,7 +19,7 @@ fun toDoScheduleNotification(
     if (date == "Time not set")
         return
 
-// Intent to start the Broadcast Receiver
+    // Intent to start the Broadcast Receiver
     val broadcastIntent = Intent(
         context, ToDoNotificationReceiver::class.java
     ).apply {
@@ -28,10 +28,8 @@ fun toDoScheduleNotification(
         putExtra(TODO_ID, id)
     }
 
-    // Date = "15:49 22/08/2022"
     val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-    val timeTriggerInMillis =
-        sdf.parse(date)!!.time
+    val timeTriggerInMillis = sdf.parse(date)!!.time
 
     val pIntent =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -28,13 +28,13 @@ fun isChecking(checkBox: CheckBox, toDo: ToDo, viewModel: ToDoViewModel) {
     checkBox.setOnCheckedChangeListener { _, b ->
         if (b) {
             viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = true)))
-            toDoCancelNotification(checkBox.context, toDo.id.toLong())
+            toDoCancelNotification(checkBox.context, toDo.id)
         } else {
-            Log.i("notification", " toDo.id.toLong() ${toDo.id.toLong()}")
+            Log.i("notification", " toDo.id.toLong() ${toDo.id}")
             viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = false)))
             toDoScheduleNotification(
                 checkBox.context,
-                toDo.id.toLong(),
+                toDo.id,
                 toDo.title,
                 toDo.description,
                 toDo.dateAndTime

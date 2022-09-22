@@ -110,6 +110,6 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         val toDoDiffUtil = ToDoDiffUtil(dataList, toDoData)
         val toDoDiffResult = DiffUtil.calculateDiff(toDoDiffUtil)
         this.dataList = toDoData
-        toDoDiffResult.dispatchUpdatesTo(this)  // dispathUpdatesTo is used to update the recyclerview
+        toDoDiffResult.dispatchUpdatesTo(this)  // dispatchUpdatesTo is used to update the recyclerview
     }
 }
