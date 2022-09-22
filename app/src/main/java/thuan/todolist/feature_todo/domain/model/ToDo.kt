@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "todo_table")
 data class ToDo(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     @ColumnInfo(name = "todo_title")
     val title: String,
     @ColumnInfo(name = "todo_description")
