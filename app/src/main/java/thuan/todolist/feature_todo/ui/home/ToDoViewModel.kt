@@ -3,8 +3,7 @@ package thuan.todolist.feature_todo.ui.home
 import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.data.repository.ToDoRepository
+import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 import thuan.todolist.feature_todo.domain.util.*
@@ -17,6 +16,8 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
         Log.i(TAG, ": track to do")
         toDoUseCases.getToDos(order)
     }
+
+    val isFilterVisible: MutableLiveData<Boolean> = MutableLiveData(false)
 
     val defaultTodo = ToDo(
         id = -1,
@@ -77,6 +78,10 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
                 }
             }
         }
+    }
+
+    fun getGroupToDo(): LiveData<List<GroupToDo>> {
+        return toDoUseCases.getGroupsToDo()
     }
 }
 

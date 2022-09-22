@@ -15,7 +15,7 @@
     <string name="add_group">Add group</string>
     <string name="set_date_and_time">Set Date and Time</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="OK">OK</string>
     <string name="descending">Descending</string>
     <string name="ascending">Ascending</string>
     <string name="none">None</string>
@@ -23,4 +23,5 @@
     <string name="all">All</string>
     <string name="completed">Completed</string>
     <string name="uncompleted">Uncompleted</string>
+    <string name="filter">filter</string>
 </resources>

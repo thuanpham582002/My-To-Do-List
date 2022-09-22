@@ -2,16 +2,18 @@ package thuan.todolist.feature_todo.ui.add_edit_todo
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.data.repository.ToDoRepository
 import thuan.todolist.feature_todo.domain.model.GroupToDo
+import thuan.todolist.feature_todo.domain.model.InvalidGroupException
+import thuan.todolist.feature_todo.domain.model.InvalidToDoException
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 
 class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
 
+
     val latestState = MutableLiveData<UIEvent>()
+    val toDoId = MutableLiveData<Long>()
 
     val todoTitle = MutableLiveData("")
 
@@ -22,6 +24,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     val groupName = MutableLiveData("Default")
 
     init {
+        toDoId.value = toDo?.id?.toLong()
         todoTitle.value = toDo?.title
         todoDescription.value = toDo?.description
         todoDateAndTime.value = toDo?.dateAndTime
@@ -59,8 +62,12 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
 
             is AddEditToDoEvent.SaveGroup -> {
                 viewModelScope.launch {
-                    toDoUseCases.addGroup(GroupToDo(name = event.groupName))
-                    latestState.value = UIEvent.ShowSnackBar("Group added")
+                    try {
+                        toDoUseCases.addGroup(GroupToDo(name = event.groupName))
+                        latestState.value = UIEvent.ShowSnackBar("Group added")
+                    } catch (e: InvalidGroupException) {
+                        latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save group")
+                    }
                 }
             }
 
@@ -75,54 +82,49 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         val description = todoDescription.value
         val dateAndTime = todoDateAndTime.value
         val groupName = groupName.value
-        if (title.toString().isEmpty()) {
-            latestState.value = UIEvent.ShowSnackBar("Title cannot be empty")
-            return
-        }
-
-        viewModelScope.launch {
-            toDoUseCases.addGroup(GroupToDo(name = groupName.toString()))
-        }
 
         if (toDo!!.id == -1) {
             viewModelScope.launch {
-                toDoUseCases.addToDo(
-                    ToDo(
-                        id = 0,
-                        title = title.toString(),
-                        description = description.toString(),
-                        dateAndTime = dateAndTime.toString(),
-                        isCompleted = false,
-                        groupName = groupName.toString()
+                try {
+                    toDoId.value = toDoUseCases.addToDo(
+                        ToDo(
+                            id = 0,
+                            title = title.toString(),
+                            description = description.toString(),
+                            dateAndTime = dateAndTime.toString(),
+                            isCompleted = false,
+                            groupName = groupName.toString()
+                        )
                     )
-                )
+
+                    latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
+                } catch (e: InvalidToDoException) {
+                    latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save todo")
+                }
             }
-            latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
         } else {
             viewModelScope.launch {
-                toDoUseCases.updateToDo(
-                    ToDo(
-                        id = toDo.id,
-                        title = title.toString(),
-                        description = description.toString(),
-                        dateAndTime = dateAndTime.toString(),
-                        isCompleted = toDo.isCompleted,
-                        groupName = groupName.toString()
+                try {
+                    toDoUseCases.updateToDo(
+                        ToDo(
+                            id = toDo.id,
+                            title = title.toString(),
+                            description = description.toString(),
+                            dateAndTime = dateAndTime.toString(),
+                            isCompleted = toDo.isCompleted,
+                            groupName = groupName.toString()
+                        )
                     )
-                )
+                    latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
+                } catch (e: InvalidToDoException) {
+                    latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save todo")
+                }
             }
-            latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
         }
     }
 
     fun getGroupToDo(): LiveData<List<GroupToDo>> {
         return toDoUseCases.getGroupsToDo()
-    }
-
-    fun insertGroup(groupToDo: GroupToDo) {
-        viewModelScope.launch {
-            toDoUseCases.addGroup(groupToDo)
-        }
     }
 
     sealed class UIEvent {

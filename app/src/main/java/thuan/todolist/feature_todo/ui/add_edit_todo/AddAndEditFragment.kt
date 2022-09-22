@@ -1,5 +1,6 @@
 package thuan.todolist.feature_todo.ui.add_edit_todo
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,10 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.databinding.FragmentAddEditBinding
 import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.domain.model.GroupToDo
+import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogAddGroup
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogQuitWithOutSaving
-import thuan.todolist.feature_todo.ui.time_date_picker.DateAndTimePickerBottomSheet
+import thuan.todolist.feature_todo.ui.add_edit_todo.components.time_date_picker.DateAndTimePickerBottomSheet
 
 const val TAG = "AddAndEditFragment"
 
@@ -52,7 +53,10 @@ class AddAndEditFragment : Fragment() {
         setupListPopUpGroup()
         setDefaultData()
         onUIClick()
+        subscribeToObservers()
+    }
 
+    private fun subscribeToObservers() {
         viewModel.latestState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AddEditToDoViewModel.UIEvent.ShowSnackBar -> {
@@ -61,6 +65,13 @@ class AddAndEditFragment : Fragment() {
                 }
                 is AddEditToDoViewModel.UIEvent.SaveToDoSuccess -> {
                     showSnackBar(state.message)
+                    toDoScheduleNotification(
+                        requireContext(),
+                        viewModel.toDoId.value!!,
+                        viewModel.todoTitle.value!!,
+                        viewModel.todoDescription.value!!,
+                        viewModel.todoDateAndTime.value!!,
+                    )
                     requireActivity().onBackPressed()
                 }
                 AddEditToDoViewModel.UIEvent.None -> {}
@@ -87,8 +98,10 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
+
                 override fun afterTextChanged(s: Editable?) {
                     viewModel.onEvent(AddEditToDoEvent.EnteredTitle(s.toString()))
                 }
@@ -102,8 +115,10 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
+
                 override fun afterTextChanged(s: Editable?) {
                     if (s.toString().isNotEmpty()) {
                         viewModel.onEvent(AddEditToDoEvent.EnteredDescription(s.toString()))
@@ -159,9 +174,7 @@ class AddAndEditFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
                 DialogQuitWithOutSaving.show(requireContext()) {
-                    viewModel.onEvent(
-                        AddEditToDoEvent.SaveToDo
-                    )
+                    viewModel.onEvent(AddEditToDoEvent.SaveToDo)
                 }
             } else {
                 requireActivity().onBackPressed()
@@ -170,9 +183,7 @@ class AddAndEditFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 thuan.todolist.R.id.action_save -> {
-                    viewModel.onEvent(
-                        AddEditToDoEvent.SaveToDo
-                    )
+                    viewModel.onEvent(AddEditToDoEvent.SaveToDo)
                     true
                 }
                 else -> false
@@ -187,7 +198,6 @@ class AddAndEditFragment : Fragment() {
                 Log.i(TAG, "setupListPopUpGroup:  Default not in listGroup")
                 listGroup = listOf("Default") + listGroup
                 viewModel.onEvent(AddEditToDoEvent.SaveGroup("Default"))
-                viewModel.insertGroup(GroupToDo(name = "Default"))
             }
 
             listPopUpGroup = ListPopupWindow(requireContext())

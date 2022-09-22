@@ -22,8 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvDialogTitle"
-        android:layout_centerHorizontal="true"
-       />
+        android:layout_centerHorizontal="true" />
 
     <DatePicker
         android:id="@+id/datePicker"
@@ -66,7 +65,7 @@
             style="@style/ThemeOverlay.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok"
+            android:text="@string/OK"
             android:textStyle="bold" />
         <!--        android:layout_marginStart="@dimen/extreme_large_margin3"-->
     </LinearLayout>

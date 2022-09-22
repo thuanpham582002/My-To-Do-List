@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -19,7 +20,6 @@ import thuan.todolist.MainActivity
 import thuan.todolist.R
 import thuan.todolist.databinding.FragmentHomeBinding
 import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 import thuan.todolist.feature_todo.domain.util.*
 import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.ToDoAdapter
 import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
@@ -31,6 +31,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toDoAdapter: ToDoAdapter
+    private lateinit var spinner: Spinner
     lateinit var selectionTracker: SelectionTracker<Long>
     private var actionMode: ActionMode? = null
     private var isViewCreated = false
@@ -59,7 +60,15 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     private fun subscribeToObservers() {
-        viewModel.toDoOrder.value = viewModel.toDoOrder.value
+        viewModel.isFilterVisible.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.rlOrder.visibility = View.VISIBLE
+            } else {
+                binding.rlOrder.visibility = View.GONE
+            }
+        }
+
+//        viewModel.toDoOrder.value = viewModel.toDoOrder.value
         viewModel.listTodo.observe(viewLifecycleOwner) {
             Log.i(TAG, "onViewCreated: ${it.size}")
             toDoAdapter.setData(it)
@@ -74,7 +83,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         }
 
         binding.btnOrder.setOnClickListener {
-            viewModel.onEvent(ToDosEvent.Order(GroupType.Custom("Default")))
+            viewModel.isFilterVisible.value = viewModel.isFilterVisible.value != true
         }
 
         binding.rbDate.setOnClickListener {
@@ -118,36 +127,22 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     private fun setupSpinnerGroup() {
-        val group = listOf("All", "Completed", "Uncompleted")
-        val spinner = binding.spinnerGroup
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, group)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-        spinner.onItemSelectedListener = this
+        viewModel.getGroupToDo().observe(viewLifecycleOwner) {
+            val group = listOf<String>("All") + it.map { group -> group.name }
+            spinner = binding.spinnerGroup
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, group)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+            spinner.onItemSelectedListener = this
+        }
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//        when (p2) {
-//            0 -> {
-//                viewModel.getAllToDo()
-//                    .observe(viewLifecycleOwner) { list ->
-//                        toDoAdapter.setData(list)
-//                    }
-//            }
-//            1 -> {
-//                viewModel.getAllCompletedToDo()
-//                    .observe(viewLifecycleOwner) { list ->
-//                        toDoAdapter.setData(list)
-//                    }
-//            }
-//            2 -> {
-//                viewModel.getAllUncompletedToDo()
-//                    .observe(viewLifecycleOwner) { list ->
-//                        toDoAdapter.setData(list)
-//                    }
-//            }
-//
-//    }
+        if (p2 == 0)
+            viewModel.onEvent(ToDosEvent.Order(GroupType.All))
+        else
+            viewModel.onEvent(ToDosEvent.Order(GroupType.Custom(spinner.selectedItem.toString())))
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -184,7 +179,6 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         with(binding.recyclerView) {
             adapter = toDoAdapter
             layoutManager = LinearLayoutManager(requireContext())
-//            FastScrollerBuilder(this).build()
         }
     }
 
@@ -201,17 +195,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
-//        viewModel.searchTextQuery.value = newText
-//        viewModel.listTodo1.observe(viewLifecycleOwner) {
-//
-//        }
         viewModel.onEvent(ToDosEvent.Order(SearchOrder(newText)))
-
-//        viewModel.listTodo.observe(viewLifecycleOwner) {
-//            toDoAdapter.setData(it.filter { toDo ->
-//                toDo.title.lowercase().contains(newText.toString().lowercase())
-//            })
-//        }
         return true
     }
 

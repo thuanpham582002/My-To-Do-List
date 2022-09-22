@@ -45,7 +45,7 @@
                 android:paddingEnd="25dp"
                 android:text="@{todo.getTitle}"
                 android:textColor="@{todo.isCompleted ? @color/gray : @color/black}"
-                android:textSize="18sp"
+                android:textSize="@dimen/title2_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +57,7 @@
                 android:paddingEnd="25dp"
                 android:text="@{todo.dateAndTime}"
                 android:textColor="@{todo.isCompleted ? @color/gray : @color/black}"
-                android:textSize="14sp"
+                android:textSize="@dimen/title4_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_todo" />
 
@@ -69,7 +69,7 @@
                 android:paddingEnd="25dp"
                 android:text="@{todo.groupName}"
                 android:textColor="@{todo.isCompleted ? @color/gray : @color/black}"
-                android:textSize="14sp"
+                android:textSize="@dimen/title4_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_date_and_time" />
 

@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.ui.time_date_picker
+package thuan.todolist.feature_todo.ui.add_edit_todo.components.time_date_picker
 
 import android.os.Build
 import android.os.Bundle
@@ -34,20 +34,10 @@ class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val dayOfWeekString: String = when (calendar.firstDayOfWeek) {
-            1 -> "Sunday"
-            2 -> "Monday"
-            3 -> "Tuesday"
-            4 -> "Wednesday"
-            5 -> "Thursday"
-            6 -> "Friday"
-            7 -> "Saturday"
-            else -> "Error"
-        }
 
-        val month = calendar.get(Calendar.MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
-        return "$hour:$minute | $dayOfWeekString | $day/$month/$year"
+        return String.format("%02d:%02d %02d/%02d/%d", hour, minute, day, month, year)
     }
 
     private fun setOnClick() {
@@ -76,32 +66,17 @@ class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
             binding.timePicker.hour
         } else {
             "Error"
-//            TODO("VERSION.SDK_INT < M")
         }
         val minute = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.timePicker.minute
         } else {
             "Error"
-//            TODO("VERSION.SDK_INT < M")
         }
 
         val day = binding.datePicker.dayOfMonth
-
-        val dayOfWeekString: String = when (binding.datePicker.firstDayOfWeek) {
-            1 -> "Sunday"
-            2 -> "Monday"
-            3 -> "Tuesday"
-            4 -> "Wednesday"
-            5 -> "Thursday"
-            6 -> "Friday"
-            7 -> "Saturday"
-            else -> "Error"
-        }
-
-        val month = binding.datePicker.month
-
+        val month = binding.datePicker.month + 1
         val year = binding.datePicker.year
 
-        return "$hour:$minute | $dayOfWeekString | $day/$month/$year"
+        return String.format("%02d:%02d %02d/%02d/%d", hour, minute, day, month, year)
     }
 }

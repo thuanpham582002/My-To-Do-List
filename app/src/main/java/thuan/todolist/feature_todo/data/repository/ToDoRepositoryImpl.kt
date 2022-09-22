@@ -11,7 +11,11 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getAllToDo()
     }
 
-    override fun getAllToDoWithGroup(groupName : String): LiveData<GroupWithToDos> {
+    override suspend fun getAllToDoSync(): List<ToDo> {
+        return dao.getAllToDoSync()
+    }
+
+    override fun getAllToDoWithGroup(groupName: String): LiveData<GroupWithToDos> {
         return dao.getAllToDoWithGroup(groupName)
     }
 
@@ -23,8 +27,8 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         dao.deleteToDoById(toDo)
     }
 
-    override suspend fun insertToDo(toDo: ToDo) {
-        dao.insertToDo(toDo)
+    override suspend fun insertToDo(toDo: ToDo): Long {
+        return dao.insertToDo(toDo)
     }
 
     override suspend fun insertGroup(group: GroupToDo) {

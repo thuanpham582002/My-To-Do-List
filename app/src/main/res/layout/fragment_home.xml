@@ -44,8 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:contentDescription="order"
-                android:src="@drawable/ic_delete" />
+                android:contentDescription="@string/filter"
+                android:src="@drawable/ic_filter_list" />
         </LinearLayout>
 
         <RelativeLayout
@@ -72,7 +72,7 @@
                     android:gravity="center"
                     android:text="@string/none"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
 
                 <RadioButton
                     android:id="@+id/rb_title"
@@ -83,7 +83,7 @@
                     android:gravity="center"
                     android:text="@string/title"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
 
                 <RadioButton
                     android:id="@+id/rb_date"
@@ -94,7 +94,7 @@
                     android:gravity="center"
                     android:text="@string/date"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
             </RadioGroup>
 
             <RadioGroup
@@ -114,7 +114,7 @@
                     android:gravity="center"
                     android:text="@string/all"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
 
                 <RadioButton
                     android:id="@+id/rb_todo_completed"
@@ -125,7 +125,7 @@
                     android:gravity="center"
                     android:text="@string/completed"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
 
                 <RadioButton
                     android:id="@+id/rb_todo_uncompleted"
@@ -136,7 +136,7 @@
                     android:gravity="center"
                     android:text="@string/uncompleted"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
             </RadioGroup>
 
 
@@ -157,7 +157,7 @@
                     android:gravity="center"
                     android:text="@string/ascending"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
 
                 <RadioButton
                     android:id="@+id/rb_desc"
@@ -168,10 +168,9 @@
                     android:gravity="center"
                     android:text="@string/descending"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/title3_size" />
             </RadioGroup>
-
-
+            
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

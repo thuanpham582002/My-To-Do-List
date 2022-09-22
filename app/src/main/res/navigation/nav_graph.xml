@@ -10,7 +10,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_addFragment"
-            app:destination="@id/addAndEditFragment" />
+            app:destination="@id/addAndEditFragment"
+            app:enterAnim="@anim/anim_from_bottom"
+            app:exitAnim="@anim/anim_leave_from_top"
+            app:popEnterAnim="@anim/anim_from_top"
+            app:popExitAnim="@anim/anim_leave_from_bottom" />
     </fragment>
     <fragment
         android:id="@+id/addAndEditFragment"

@@ -6,5 +6,5 @@ data class ToDoUseCases(
     val addToDo: AddToDo,
     val addGroup: AddGroup,
     val updateToDo: UpdateToDo,
-    val deleteToDo: DeleteToDo
+    val deleteToDo: DeleteToDo,
 )

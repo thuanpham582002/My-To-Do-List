@@ -12,6 +12,9 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_table")
     fun getAllToDo(): LiveData<List<ToDo>>
 
+    @Query("SELECT * FROM todo_table")
+    suspend fun getAllToDoSync(): List<ToDo>
+
     @Query("SELECT * FROM group_todo_table WHERE group_name = :groupName")
     fun getAllToDoWithGroup(groupName: String): LiveData<GroupWithToDos>
 
@@ -26,7 +29,7 @@ interface ToDoDao {
     fun getToDoById(id: Int): LiveData<ToDo>
 
     @Insert()
-    suspend fun insertToDo(toDo: ToDo)
+    suspend fun insertToDo(toDo: ToDo): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroup(group: GroupToDo)

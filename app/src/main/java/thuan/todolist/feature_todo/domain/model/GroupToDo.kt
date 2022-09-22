@@ -10,3 +10,5 @@ data class GroupToDo(
     @ColumnInfo(name = "group_name")
     val name: String,
 )
+
+class InvalidGroupException(message: String) : Exception(message)
