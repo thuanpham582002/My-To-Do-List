@@ -2,7 +2,6 @@ package thuan.todolist.feature_todo.ui.add_edit_todo.components
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import thuan.todolist.feature_todo.ui.add_edit_todo.AddEditToDoEvent
 
 object DialogQuitWithOutSaving {
     fun show(context: Context, saveToDo: () -> Unit) {
