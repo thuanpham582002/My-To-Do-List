@@ -1,9 +1,9 @@
-package thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker
+package thuan.todolist.feature_todo.ui.home.components.adapter.todo_selectiontracker
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
-import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.ToDoAdapter
+import thuan.todolist.feature_todo.ui.home.components.adapter.ToDoAdapter
 
 class ToDosDetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<Long>() {
     override fun getItemDetails(e: MotionEvent): ItemDetails<Long>? {

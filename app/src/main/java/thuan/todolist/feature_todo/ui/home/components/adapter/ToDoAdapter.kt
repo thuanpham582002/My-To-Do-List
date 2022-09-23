@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.ui.home.components.adapter.case_todo
+package thuan.todolist.feature_todo.ui.home.components.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
-import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.util.ToDoDiffUtil
+import thuan.todolist.feature_todo.ui.home.components.adapter.util.ToDoDiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 

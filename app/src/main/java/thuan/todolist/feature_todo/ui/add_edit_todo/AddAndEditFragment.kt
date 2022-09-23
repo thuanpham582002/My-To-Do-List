@@ -50,7 +50,7 @@ class AddAndEditFragment : Fragment() {
         setupViewModel()
         setupToolbar()
         setupListPopUpGroup()
-        setDefaultData()
+        setData()
         onUIClick()
         subscribeToObservers()
     }
@@ -152,7 +152,7 @@ class AddAndEditFragment : Fragment() {
     }
 
 
-    private fun setDefaultData() {
+    private fun setData() {
         Log.i(TAG, "setDefaultData: data changed")
         binding.etTitle.setText(viewModel.todoTitle.value)
         binding.etDescription.setText(viewModel.todoDescription.value)
@@ -170,22 +170,24 @@ class AddAndEditFragment : Fragment() {
     }
 
     private fun onClickToolBar() {
-        binding.toolbar.setNavigationOnClickListener {
-            if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
-                DialogQuitWithOutSaving.show(requireContext()) {
-                    viewModel.onEvent(AddEditToDoEvent.SaveToDo)
+        binding.apply {
+            toolbar.setNavigationOnClickListener {
+                if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
+                    DialogQuitWithOutSaving.show(requireContext()) {
+                        viewModel.onEvent(AddEditToDoEvent.SaveToDo)
+                    }
+                } else {
+                    requireActivity().onBackPressed()
                 }
-            } else {
-                requireActivity().onBackPressed()
             }
-        }
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                thuan.todolist.R.id.action_save -> {
-                    viewModel.onEvent(AddEditToDoEvent.SaveToDo)
-                    true
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    thuan.todolist.R.id.action_save -> {
+                        viewModel.onEvent(AddEditToDoEvent.SaveToDo)
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
     }

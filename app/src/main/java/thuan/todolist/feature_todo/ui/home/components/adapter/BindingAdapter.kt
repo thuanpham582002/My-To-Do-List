@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.ui.home.components.adapter.case_todo
+package thuan.todolist.feature_todo.ui.home.components.adapter
 
 import android.util.Log
 import android.widget.CheckBox

@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.util
+package thuan.todolist.feature_todo.ui.home.components.adapter.util
 
 import androidx.recyclerview.widget.DiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo

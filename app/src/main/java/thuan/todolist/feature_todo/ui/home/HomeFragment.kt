@@ -21,9 +21,9 @@ import thuan.todolist.R
 import thuan.todolist.databinding.FragmentHomeBinding
 import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.util.*
-import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.ToDoAdapter
-import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker.ToDosDetailsLookup
-import thuan.todolist.feature_todo.ui.home.components.adapter.case_todo.todo_selectiontracker.ToDosKeyProvider
+import thuan.todolist.feature_todo.ui.home.components.adapter.ToDoAdapter
+import thuan.todolist.feature_todo.ui.home.components.adapter.todo_selectiontracker.ToDosDetailsLookup
+import thuan.todolist.feature_todo.ui.home.components.adapter.todo_selectiontracker.ToDosKeyProvider
 
 const val TAG = "HomeFragment"
 

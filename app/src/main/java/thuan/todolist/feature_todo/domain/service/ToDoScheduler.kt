@@ -49,11 +49,13 @@ fun toDoScheduleNotification(
 
     // Setting up AlarmManager
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    alarmMgr.setExactAndAllowWhileIdle(
-        AlarmManager.RTC_WAKEUP,
-        timeTriggerInMillis,
-        pIntent
-    )
+    if (timeTriggerInMillis > System.currentTimeMillis()) {
+        alarmMgr.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            timeTriggerInMillis,
+            pIntent
+        )
+    }
 }
 
 fun toDoCancelNotification(context: Context, id: Long) {
