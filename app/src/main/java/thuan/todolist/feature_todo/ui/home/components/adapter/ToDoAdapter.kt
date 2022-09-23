@@ -1,5 +1,6 @@
 package thuan.todolist.feature_todo.ui.home.components.adapter
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import thuan.todolist.databinding.ItemTodoBinding
 import thuan.todolist.feature_todo.ui.home.components.adapter.util.ToDoDiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ToDoAdapter(private val viewModel: ToDoViewModel) :
     RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
@@ -31,6 +34,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             bindData(todo, viewModel)
             startAnimation()
             checkItemSelection(todo)
+            checkDuration(todo)
         }
 
         private fun bindData(
@@ -78,6 +82,19 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
                 override fun getPosition(): Int {
                     return adapterPosition
                 }
+            }
+        }
+
+        private fun checkDuration(todo: ToDo) {
+            if (todo.isCompleted) return
+            val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
+            val timeTriggerInMillis = sdf.parse(todo.dateAndTime)!!.time
+            val currentTimeInMillis = System.currentTimeMillis()
+            val duration = timeTriggerInMillis - currentTimeInMillis
+            if (duration < 0) {
+                binding.tvTodo.setTextColor(Color.RED)
+                binding.tvDateAndTime.setTextColor(Color.RED)
+                binding.tvGroupName.setTextColor(Color.RED)
             }
         }
     }
