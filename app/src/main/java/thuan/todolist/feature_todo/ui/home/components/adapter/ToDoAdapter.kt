@@ -86,7 +86,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         }
 
         private fun checkDuration(todo: ToDo) {
-            if (todo.isCompleted) return
+            if (todo.isCompleted || todo.dateAndTime == "Time not set") return
             val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
             val timeTriggerInMillis = sdf.parse(todo.dateAndTime)!!.time
             val currentTimeInMillis = System.currentTimeMillis()

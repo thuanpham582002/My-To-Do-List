@@ -20,6 +20,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     val todoDescription = MutableLiveData("")
 
     val todoDateAndTime = MutableLiveData("Date not set")
+    val isTimeSet = MutableLiveData(false)
 
     val groupName = MutableLiveData("Default")
 

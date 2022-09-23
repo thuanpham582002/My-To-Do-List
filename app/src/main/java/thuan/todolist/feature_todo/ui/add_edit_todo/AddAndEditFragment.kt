@@ -1,5 +1,6 @@
 package thuan.todolist.feature_todo.ui.add_edit_todo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -55,6 +56,7 @@ class AddAndEditFragment : Fragment() {
         subscribeToObservers()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeToObservers() {
         viewModel.latestState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -74,6 +76,19 @@ class AddAndEditFragment : Fragment() {
                     requireActivity().onBackPressed()
                 }
                 AddEditToDoViewModel.UIEvent.None -> {}
+            }
+        }
+        viewModel.isTimeSet.observe(viewLifecycleOwner) { isTimeSet ->
+            if (isTimeSet) {
+                binding.deleteDateAndTime.visibility = View.VISIBLE
+                val img = requireContext().getDrawable(thuan.todolist.R.drawable.ic_timer)
+                img?.setBounds(0, 0, 60, 60)
+                binding.tvTimeAndDate.setCompoundDrawables(img, null, null, null)
+            } else {
+                binding.deleteDateAndTime.visibility = View.GONE
+                val img = requireContext().getDrawable(thuan.todolist.R.drawable.ic_timer_off)
+                img?.setBounds(0, 0, 60, 60)
+                binding.tvTimeAndDate.setCompoundDrawables(img, null, null, null)
             }
         }
     }
@@ -132,12 +147,21 @@ class AddAndEditFragment : Fragment() {
             tvTimeAndDate.setOnClickListener {
                 DateAndTimePickerBottomSheet {
                     tvTimeAndDate.text = it
+                    deleteDateAndTime.visibility = View.VISIBLE
+                    viewModel.isTimeSet.value = true
                     viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime(it))
                 }.show(
                     childFragmentManager,
                     "DateAndTimePickerBottomSheet"
                 )
                 Log.i(TAG, "onUIClick: tvTimeAndDate")
+            }
+
+            deleteDateAndTime.setOnClickListener {
+                viewModel.isTimeSet.value = false
+                tvTimeAndDate.text = String.format("Time not set")
+                viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime("Time not set"))
+                it.visibility = View.GONE
             }
 
             btnAddGroup.setOnClickListener {

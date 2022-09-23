@@ -24,4 +24,5 @@
     <string name="completed">Completed</string>
     <string name="uncompleted">Uncompleted</string>
     <string name="filter">filter</string>
+    <string name="delete_time">delete time</string>
 </resources>

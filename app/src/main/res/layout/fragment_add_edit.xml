@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="to"
             type="thuan.todolist.feature_todo.domain.model.ToDo" />
@@ -105,10 +106,26 @@
                     android:id="@+id/tv_time_and_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:padding="3dp"
                     android:text="@string/time_not_set"
                     android:textColor="@android:color/black"
-                    app:drawableStartCompat="@drawable/ic_delete" />
+                    android:textSize="@dimen/title3_size"
+                    app:drawableStartCompat="@drawable/ic_timer_off" />
+
+                <ImageButton
+                    android:id="@+id/delete_date_and_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/delete_time"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
