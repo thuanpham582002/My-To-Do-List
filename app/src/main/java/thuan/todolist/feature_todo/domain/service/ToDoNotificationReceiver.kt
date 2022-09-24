@@ -8,6 +8,11 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import thuan.todolist.di.Injection
+import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 
 const val TODO_TITLE = "todo_title"
 const val TODO_CHANNEL_ID = "channel_id"
@@ -43,6 +48,17 @@ class ToDoNotificationReceiver : BroadcastReceiver() {
         val id = intent?.getLongExtra(TODO_ID, 0)?.toInt() ?: 0
         Log.i("notification", "onReceive: $id")
 
+        // update toDO
+        CoroutineScope(Dispatchers.IO).launch {
+            val toDo = Injection.provideToDoRepository(context).getToDoById(id)
+            ToDoViewModel.instance?.apply {
+                notifiItemPos.postValue(
+                    listTodo.value?.indexOf(
+                        toDo
+                    )
+                )
+            }
+        }
         // Show a notification
         am.notify(id, mBuilder.build())
     }

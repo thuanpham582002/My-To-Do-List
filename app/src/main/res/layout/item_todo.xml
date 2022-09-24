@@ -39,6 +39,8 @@
 
             <TextView
                 android:id="@+id/tv_todo"
+                isCompleted="@{todo.isCompleted}"
+                isExpired="@{todo.isExpired}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="50dp"
@@ -51,6 +53,8 @@
 
             <TextView
                 android:id="@+id/tv_date_and_time"
+                isCompleted="@{todo.isCompleted}"
+                isExpired="@{todo.isExpired}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="50dp"
@@ -63,6 +67,8 @@
 
             <TextView
                 android:id="@+id/tv_group_name"
+                isCompleted="@{todo.isCompleted}"
+                isExpired="@{todo.isExpired}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="50dp"

@@ -1,10 +1,13 @@
 package thuan.todolist.feature_todo.ui.home.components.adapter
 
+import android.graphics.Color
 import android.util.Log
 import android.widget.CheckBox
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
+import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.service.toDoCancelNotification
 import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
@@ -40,5 +43,16 @@ fun isChecking(checkBox: CheckBox, toDo: ToDo, viewModel: ToDoViewModel) {
                 toDo.dateAndTime
             )
         }
+    }
+}
+
+@BindingAdapter(value = ["isCompleted", "isExpired"])
+fun isStriked(textView: TextView, isCompleted: Boolean, isExpired: Boolean) {
+    if (isCompleted) {
+        textView.setTextColor(Color.GRAY)
+    } else if (isExpired) {
+        textView.setTextColor(Color.RED)
+    } else {
+        textView.setTextColor(Color.BLACK)
     }
 }

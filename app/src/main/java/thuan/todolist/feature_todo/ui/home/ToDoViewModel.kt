@@ -1,6 +1,5 @@
 package thuan.todolist.feature_todo.ui.home
 
-import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import thuan.todolist.feature_todo.domain.model.GroupToDo
@@ -10,11 +9,20 @@ import thuan.todolist.feature_todo.domain.util.*
 
 
 class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
+    companion object {
+        var instance: ToDoViewModel? = null
+    }
+
     private val savedStateHandle = SavedStateHandle()
-    val toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
+    private val toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
     var listTodo: LiveData<List<ToDo>> = Transformations.switchMap(toDoOrder) { order ->
-        Log.i(TAG, ": track to do")
         toDoUseCases.getToDos(order)
+    }
+
+    val notifiItemPos = MutableLiveData<Int>()
+
+    init {
+        instance = this
     }
 
     val isFilterVisible: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -25,7 +33,8 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
         description = "",
         dateAndTime = "Time not set",
         isCompleted = false,
-        groupName = "Default"
+        groupName = "Default",
+        isExpired = false
     )
 
     fun onEvent(event: ToDosEvent) {
@@ -82,6 +91,11 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
 
     fun getGroupToDo(): LiveData<List<GroupToDo>> {
         return toDoUseCases.getGroupsToDo()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        instance = null
     }
 }
 

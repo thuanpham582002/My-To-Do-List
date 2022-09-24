@@ -49,6 +49,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         isViewCreated = true
         setupViewModel()
         setupToolbar()
@@ -57,6 +58,13 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         setupSelectionTrackerAdapter()
         onUIClick()
         subscribeToObservers()
+    }
+
+    private fun setupViewModel() {
+        val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
+        val viewModelFactory =
+            ToDoViewModelFactory(Injection.provideToDoUseCases(toDoRepositoryImpl))
+        viewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
     }
 
     private fun subscribeToObservers() {
@@ -68,10 +76,12 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
             }
         }
 
-//        viewModel.toDoOrder.value = viewModel.toDoOrder.value
         viewModel.listTodo.observe(viewLifecycleOwner) {
-            Log.i(TAG, "onViewCreated: ${it.size}")
             toDoAdapter.setData(it)
+            viewModel.notifiItemPos.observe(viewLifecycleOwner) { pos ->
+                Log.i(TAG, "subscribeToObservers: $pos")
+                toDoAdapter.notifyItemChanged(pos)
+            }
         }
     }
 
@@ -117,13 +127,6 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
         binding.rbTodoUncompleted.setOnClickListener {
             viewModel.onEvent(ToDosEvent.Order(ToDoType.Uncompleted))
         }
-    }
-
-    private fun setupViewModel() {
-        val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
-        val viewModelFactory =
-            ToDoViewModelFactory(Injection.provideToDoUseCases(toDoRepositoryImpl))
-        viewModel = ViewModelProvider(this, viewModelFactory)[ToDoViewModel::class.java]
     }
 
     private fun setupSpinnerGroup() {

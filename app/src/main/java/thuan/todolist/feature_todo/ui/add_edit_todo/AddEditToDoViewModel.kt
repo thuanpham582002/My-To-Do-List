@@ -7,11 +7,11 @@ import thuan.todolist.feature_todo.domain.model.InvalidGroupException
 import thuan.todolist.feature_todo.domain.model.InvalidToDoException
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
+import thuan.todolist.feature_todo.domain.util.ToDoUtils
 
 class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
-
-
+    
     val latestState = MutableLiveData<UIEvent>()
     val toDoId = MutableLiveData<Long>()
 
@@ -35,11 +35,12 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     fun getCurrentToDo(): ToDo {
         return ToDo(
             id = toDo?.id ?: 0,
-            title = todoTitle.value ?: "",
-            description = todoDescription.value ?: "",
-            dateAndTime = todoDateAndTime.value ?: "",
+            title = todoTitle.value.toString(),
+            description = todoDescription.value.toString(),
+            dateAndTime = todoDateAndTime.value.toString(),
             isCompleted = toDo?.isCompleted ?: false,
-            groupName = groupName.value ?: ""
+            groupName = groupName.value.toString(),
+            isExpired = toDo?.isExpired ?: false
         )
     }
 
@@ -94,7 +95,8 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             description = description.toString(),
                             dateAndTime = dateAndTime.toString(),
                             isCompleted = false,
-                            groupName = groupName.toString()
+                            groupName = groupName.toString(),
+                            isExpired = ToDoUtils.isExpired(dateAndTime.toString())
                         )
                     )
 
@@ -113,7 +115,8 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             description = description.toString(),
                             dateAndTime = dateAndTime.toString(),
                             isCompleted = toDo.isCompleted,
-                            groupName = groupName.toString()
+                            groupName = groupName.toString(),
+                            isExpired = ToDoUtils.isExpired(dateAndTime.toString())
                         )
                     )
                     latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
@@ -133,7 +136,6 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         data class SaveToDoSuccess(val message: String) : UIEvent()
         object None : UIEvent()
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")

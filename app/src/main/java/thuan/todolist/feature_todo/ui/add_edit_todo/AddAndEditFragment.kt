@@ -56,6 +56,15 @@ class AddAndEditFragment : Fragment() {
         subscribeToObservers()
     }
 
+    private fun setupViewModel() {
+        val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
+        val viewModelFactory = AddEditToDoViewModelFactory(
+            Injection.provideToDoUseCases(toDoRepositoryImpl),
+            AddAndEditFragmentArgs.fromBundle(requireArguments()).todo
+        )
+        viewModel = ViewModelProvider(this, viewModelFactory)[AddEditToDoViewModel::class.java]
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeToObservers() {
         viewModel.latestState.observe(viewLifecycleOwner) { state ->
@@ -91,15 +100,6 @@ class AddAndEditFragment : Fragment() {
                 binding.tvTimeAndDate.setCompoundDrawables(img, null, null, null)
             }
         }
-    }
-
-    private fun setupViewModel() {
-        val toDoRepositoryImpl = Injection.provideToDoRepository(requireContext())
-        val viewModelFactory = AddEditToDoViewModelFactory(
-            Injection.provideToDoUseCases(toDoRepositoryImpl),
-            AddAndEditFragmentArgs.fromBundle(requireArguments()).todo
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory)[AddEditToDoViewModel::class.java]
     }
 
     private fun onUIClick() {
@@ -177,7 +177,6 @@ class AddAndEditFragment : Fragment() {
 
 
     private fun setData() {
-        Log.i(TAG, "setDefaultData: data changed")
         binding.etTitle.setText(viewModel.todoTitle.value)
         binding.etDescription.setText(viewModel.todoDescription.value)
         binding.tvTimeAndDate.text = viewModel.todoDateAndTime.value

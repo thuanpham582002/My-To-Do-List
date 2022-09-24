@@ -1,6 +1,5 @@
 package thuan.todolist.feature_todo.ui.home.components.adapter
 
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,9 +12,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
-import thuan.todolist.feature_todo.ui.home.components.adapter.util.ToDoDiffUtil
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
+import thuan.todolist.feature_todo.ui.home.ToDosEvent
+import thuan.todolist.feature_todo.ui.home.components.adapter.util.ToDoDiffUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,14 +27,14 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
     inner class ToDoViewHolder(private val binding: ItemTodoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            todo: ToDo,
+            todoPos: Int,
             viewModel: ToDoViewModel
         ) {  // fun bind is used to bind data to the view
             Log.i("adapter", adapterPosition.toString())
-            bindData(todo, viewModel)
             startAnimation()
-            checkItemSelection(todo)
-            checkDuration(todo)
+            checkItemSelection(dataList[todoPos])
+            checkExpired(dataList[todoPos])
+            bindData(dataList[todoPos], viewModel)
         }
 
         private fun bindData(
@@ -85,16 +85,19 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
             }
         }
 
-        private fun checkDuration(todo: ToDo) {
-            if (todo.isCompleted || todo.dateAndTime == "Time not set") return
+        private fun checkExpired(todo: ToDo) {
+            if (todo.dateAndTime == "Time not set") return
             val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-            val timeTriggerInMillis = sdf.parse(todo.dateAndTime)!!.time
-            val currentTimeInMillis = System.currentTimeMillis()
-            val duration = timeTriggerInMillis - currentTimeInMillis
-            if (duration < 0) {
-                binding.tvTodo.setTextColor(Color.RED)
-                binding.tvDateAndTime.setTextColor(Color.RED)
-                binding.tvGroupName.setTextColor(Color.RED)
+            val dateAndTimeInMilliSeconds = sdf.parse(todo.dateAndTime)!!.time
+            val currentTime = System.currentTimeMillis()
+            if (todo.isExpired != (dateAndTimeInMilliSeconds < currentTime)) {
+                viewModel.onEvent(ToDosEvent.UpdateToDo(todo.copy(isExpired = dateAndTimeInMilliSeconds < currentTime)))
+                dataList = dataList.toMutableList().apply {
+                    set(
+                        adapterPosition,
+                        todo.copy(isExpired = dateAndTimeInMilliSeconds < currentTime)
+                    )
+                }
             }
         }
     }
@@ -110,7 +113,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
     }
 
     override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
-        holder.bind(dataList[position], viewModel)
+        holder.bind(position, viewModel)
         Log.i("adapter", "onBindViewHolder" + dataList[position].id + "size: " + dataList.size)
     }
 

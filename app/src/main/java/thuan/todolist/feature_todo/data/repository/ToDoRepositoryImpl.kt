@@ -11,6 +11,10 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getAllToDo()
     }
 
+    override fun getToDoById(id: Int): ToDo {
+        return dao.getToDoById(id)
+    }
+
     override suspend fun getAllToDoSync(): List<ToDo> {
         return dao.getAllToDoSync()
     }
