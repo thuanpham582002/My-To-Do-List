@@ -26,8 +26,4 @@ object Injection {
             deleteToDo = DeleteToDo(repository)
         )
     }
-
-    fun provideIODispatcher(): CoroutineContext { // provide dispatcher for coroutines
-        return Dispatchers.IO
-    }
 }
