@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
-import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.service.toDoCancelNotification
 import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
