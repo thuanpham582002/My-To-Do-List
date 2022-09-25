@@ -16,3 +16,11 @@ Kotlin, Room Database, MVVM + Clean Architecture, Coroutine, AlarmManager, Mater
 - Beautiful Material design and interface
 - Intuitive sort interface (Giao diện sắp xếp trực quan)
 - Data stored offline all locally on your device
+## Planned Features
+
+- Dark Mode Toggle/Settings Menu
+- Overview customization
+- Themes
+- Multi Language
+- Cloud Data stored
+- …
