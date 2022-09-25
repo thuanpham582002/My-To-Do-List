@@ -51,5 +51,6 @@ Kotlin, Room Database, MVVM + Clean Architecture, Coroutine, AlarmManager, Mater
 ![image](https://user-images.githubusercontent.com/95533596/192137040-87d34806-4a3f-446e-8dfb-64045d01b104.png)
 - Chứa ui và viewmodel.
 - My to do app sử dụng 2 fragment(add_edit_todo và home) và 1 activity.
+## Ứng dụng hướng tới tối đa hóa tính trừu tượng, bảo trì và tái sử dụng code <3
 
 
