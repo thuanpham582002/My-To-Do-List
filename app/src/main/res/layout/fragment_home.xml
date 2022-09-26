@@ -56,26 +56,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_group">
 
-            <RadioGroup
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/radioGroup_tag_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_none"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:checked="true"
                     android:gravity="center"
                     android:text="@string/none"
                     android:textColor="#000000"
-                    android:textSize="@dimen/title3_size" />
+                    android:textSize="@dimen/title3_size"
+                    />
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_title"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -85,8 +89,9 @@
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_date"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -95,17 +100,21 @@
                     android:text="@string/date"
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
-            </RadioGroup>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <RadioGroup
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/radioGroup_todo_order"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_below="@id/radioGroup_tag_order"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_todo_all"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -116,8 +125,9 @@
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_todo_completed"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -127,8 +137,9 @@
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_todo_uncompleted"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -137,18 +148,22 @@
                     android:text="@string/uncompleted"
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
-            </RadioGroup>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
-            <RadioGroup
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/radioGroup_order"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_below="@id/radioGroup_todo_order"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_asc"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -159,8 +174,9 @@
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
-                <RadioButton
+                <Button
                     android:id="@+id/rb_desc"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -169,8 +185,8 @@
                     android:text="@string/descending"
                     android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
-            </RadioGroup>
-            
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

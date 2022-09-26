@@ -41,7 +41,12 @@ class GetToDos(private val repository: ToDoRepository) {
                             listToDo.sortedBy { it.dateAndTime }
                         }
 
-                    is ToDoTagType.None -> {}
+                    is ToDoTagType.None -> {
+                        listLiveDataToDo =
+                            Transformations.map(listLiveDataToDo) { listToDo ->
+                                listToDo.sortedBy { it.id }
+                            }
+                    }
                 }
             }
             is OrderType.Descending -> {
@@ -55,7 +60,12 @@ class GetToDos(private val repository: ToDoRepository) {
                             listToDo.sortedByDescending { it.dateAndTime }
                         }
 
-                    is ToDoTagType.None -> {}
+                    is ToDoTagType.None -> {
+                        listLiveDataToDo =
+                            Transformations.map(listLiveDataToDo) { listToDo ->
+                                listToDo.sortedByDescending { it.id }
+                            }
+                    }
                 }
             }
         }
