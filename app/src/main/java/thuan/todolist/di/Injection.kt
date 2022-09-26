@@ -7,7 +7,6 @@ import thuan.todolist.feature_todo.data.repository.ToDoRepositoryImpl
 import thuan.todolist.feature_todo.domain.use_case.*
 
 object Injection {
-
     fun provideToDoRepository(context: Context): ToDoRepositoryImpl {
         val db = ToDoDatabase.getInstance(context)
         return ToDoRepositoryImpl(db.toDoDao)
