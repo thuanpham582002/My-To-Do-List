@@ -1,7 +1,7 @@
 # My To Do List
 
 ## Một ứng dụng Android To-do app đơn giản viết bằng kotlin.
-Kotlin, Room Database, MVVM + Clean Architecture, Coroutine, AlarmManager, Material Components, Databinding, Navigation Graph
+Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmManager, Material Components, Databinding, Navigation Graph
 ## Screenshots
 ![Screenshot_1664013932](https://user-images.githubusercontent.com/95533596/192135445-a27e5a5a-4db0-488e-95fe-1c672ea9e312.png)
 ![Screenshot_1664237005](https://user-images.githubusercontent.com/95533596/192401673-868544d1-029e-4e13-83c3-16e4bb65aef5.png)
