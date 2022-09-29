@@ -31,20 +31,27 @@
 
             <Spinner
                 android:id="@+id/spinner_group"
-                style="@style/Widget.AppCompat.Spinner.DropDown"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
+                android:contentDescription="@string/group"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
                 android:spinnerMode="dropdown"
+                android:textSize="@dimen/title2_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/btn_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_weight="0.1"
+                android:adjustViewBounds="true"
+                android:background="?android:selectableItemBackground"
                 android:contentDescription="@string/filter"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_filter_list" />
         </LinearLayout>
 
@@ -52,6 +59,8 @@
             android:id="@+id/rl_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_group">
@@ -74,8 +83,7 @@
                     android:gravity="center"
                     android:text="@string/none"
                     android:textColor="#000000"
-                    android:textSize="@dimen/title3_size"
-                    />
+                    android:textSize="@dimen/title3_size" />
 
                 <Button
                     android:id="@+id/rb_title"
@@ -154,7 +162,6 @@
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/radioGroup_order"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_below="@id/radioGroup_todo_order"
                 android:orientation="horizontal"
@@ -192,11 +199,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/fab_margin"
-            android:paddingEnd="@dimen/fab_margin"
+            android:layout_height="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_order"
+            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/item_todo" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.appcompat.app.AlertDialog
 
 object DialogQuitWithOutSaving {
-    fun show(context: Context, saveToDo: () -> Unit) {
+    fun show(context: Context, actionQuit: () -> Unit) {
         AlertDialog.Builder(context)
             .setTitle("Quit without saving?")
             .setPositiveButton("Yes") { _, _ ->
-                saveToDo()
+                actionQuit()
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()

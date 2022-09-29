@@ -12,18 +12,17 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
     companion object {
         var instance: ToDoViewModel? = null
     }
+    init {
+        instance = this
+    }
 
-    private val savedStateHandle = SavedStateHandle()
     private val toDoOrder: MutableLiveData<ToDoOrder.Order> = MutableLiveData(ToDoOrder.Order())
     var listTodo: LiveData<List<ToDo>> = Transformations.switchMap(toDoOrder) { order ->
-        toDoUseCases.getToDos(order)
+            toDoUseCases.getToDos(order)
     }
 
     val notifiItemPos = MutableLiveData<Int>()
 
-    init {
-        instance = this
-    }
 
     val isFilterVisible: MutableLiveData<Boolean> = MutableLiveData(false)
 

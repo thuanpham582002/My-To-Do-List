@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
 import thuan.todolist.feature_todo.domain.model.ToDo
-import thuan.todolist.feature_todo.domain.service.toDoCancelNotification
+import thuan.todolist.feature_todo.domain.service.toDoCancelAlarmManager
 import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
 import thuan.todolist.feature_todo.ui.home.HomeFragmentDirections
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
@@ -30,7 +30,7 @@ fun isChecking(checkBox: CheckBox, toDo: ToDo, viewModel: ToDoViewModel) {
     checkBox.setOnCheckedChangeListener { _, b ->
         if (b) {
             viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = true)))
-            toDoCancelNotification(checkBox.context, toDo.id)
+            toDoCancelAlarmManager(checkBox.context, toDo.id)
         } else {
             Log.i("notification", " toDo.id.toLong() ${toDo.id}")
             viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = false)))
