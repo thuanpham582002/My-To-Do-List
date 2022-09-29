@@ -11,10 +11,11 @@ Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmMana
 ## Current Features
 - Add and manage tasks
 - Multiple Task Lists
+- Search Tasks
 - Overview of all your tasks at a glance
 - Set task due dates and reminders
 - Beautiful Material design and interface
-- Intuitive sort interface (Giao diện sắp xếp trực quan)
+- Intuitive filter interface (Giao diện lọc trực quan)
 - Data stored offline all locally on your device
 ## Planned Features
 - Dark Mode Toggle/Settings Menu
