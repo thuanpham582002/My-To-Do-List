@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.ui.add_edit_todo.components.time_date_picker
+package thuan.todolist.feature_todo.ui.add_edit_todo.components
 
 import android.os.Build
 import android.os.Bundle
@@ -7,11 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import thuan.todolist.databinding.BottomsheetDateAndTimeBinding
+import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionSetTime
 import java.util.*
 
-class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
-    BottomSheetDialogFragment() {
+class DateAndTimePickerBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomsheetDateAndTimeBinding
+    private lateinit var actionSetTime: ActionSetTime
+    private val ACTION_SET_TIME_AND_DATE = "action_set_time_and_date"
+
+    companion object {
+        fun newInstance(actionSetTime: ActionSetTime) = DateAndTimePickerBottomSheet().apply {
+            arguments = Bundle().apply {
+                putSerializable(ACTION_SET_TIME_AND_DATE, actionSetTime)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,6 +30,7 @@ class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
     ): View {
         binding = BottomsheetDateAndTimeBinding.inflate(inflater, container, false)
         binding.timePicker.setIs24HourView(true)
+        actionSetTime = arguments?.getSerializable(ACTION_SET_TIME_AND_DATE) as ActionSetTime
         return binding.root
     }
 
@@ -34,7 +45,6 @@ class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
         return String.format("%02d:%02d %02d/%02d/%d", hour, minute, day, month, year)
@@ -56,7 +66,7 @@ class DateAndTimePickerBottomSheet(private val callback: (String) -> Unit) :
     private fun cancelButtonClicked() = this.dismiss()
 
     private fun okButtonClicked() {
-        callback(getDate())
+        actionSetTime.setTime(getDate())
         this.dismiss()
     }
 
