@@ -1,13 +1,13 @@
 # My To Do List
 
 ## Một ứng dụng Android To-do app đơn giản viết bằng kotlin.
-Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmManager, Material Components, Databinding, Navigation Graph
+Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmManager, Broadcast Receiver, Material Components, Databinding, Navigation Graph
 ## Screenshots
-![Screenshot_1664013932](https://user-images.githubusercontent.com/95533596/192135445-a27e5a5a-4db0-488e-95fe-1c672ea9e312.png)
-![Screenshot_1664237005](https://user-images.githubusercontent.com/95533596/192401673-868544d1-029e-4e13-83c3-16e4bb65aef5.png)
-![Screenshot_1664014014](https://user-images.githubusercontent.com/95533596/192135456-7d47cb05-4a3d-4e4c-84cf-b4e5ae9b19ff.png)
-![Screenshot_1664446953](https://user-images.githubusercontent.com/95533596/193008267-5bf8e9b1-b283-4086-8458-683005704b3b.png)
-![Screenshot_1664447374](https://user-images.githubusercontent.com/95533596/193008331-0b032f34-d881-4f79-b223-19454bf6ada0.png)
+![image](https://user-images.githubusercontent.com/95533596/193009200-3efbc64c-9a1c-4f68-929d-bdb96c03b4b3.png)
+![image](https://user-images.githubusercontent.com/95533596/193009304-2145c576-2453-4e6f-b724-5bd527978683.png)
+![image](https://user-images.githubusercontent.com/95533596/193009441-ffdce122-8d09-4669-8585-321761878308.png)
+![image](https://user-images.githubusercontent.com/95533596/193009500-414c9642-9680-483b-a0fe-21ad23006d83.png)
+![image](https://user-images.githubusercontent.com/95533596/193009697-2f95f9ed-b1fc-4fa8-90e4-99ca2bdc1dda.png)
 ## Current Features
 - Add and manage tasks
 - Multiple Task Lists
