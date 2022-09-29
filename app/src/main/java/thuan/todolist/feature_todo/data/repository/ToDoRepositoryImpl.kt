@@ -7,11 +7,22 @@ import thuan.todolist.feature_todo.domain.model.GroupWithToDos
 import thuan.todolist.feature_todo.domain.model.ToDo
 
 class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
+    companion object {
+        private var INSTANCE: ToDoRepositoryImpl? = null
+
+        fun getInstance(dao: ToDoDao): ToDoRepositoryImpl {
+            if (INSTANCE == null) {
+                INSTANCE = ToDoRepositoryImpl(dao)
+            }
+            return INSTANCE!!
+        }
+    }
+
     override fun getAllToDo(): LiveData<List<ToDo>> {
         return dao.getAllToDo()
     }
 
-    override fun getToDoById(id: Int): ToDo {
+    override fun getToDoById(id: Long): ToDo {
         return dao.getToDoById(id)
     }
 
