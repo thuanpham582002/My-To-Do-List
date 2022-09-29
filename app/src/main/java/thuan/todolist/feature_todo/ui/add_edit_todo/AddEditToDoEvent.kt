@@ -11,6 +11,7 @@ sealed interface AddEditToDoEvent {
     data class EnteredDateAndTime(val dateAndTime: String) : AddEditToDoEvent
 
     class SaveGroup(val groupName: String) : AddEditToDoEvent
-
+    data class EnteredIsDone(val isCompleted: Boolean) : AddEditToDoEvent
     object SaveToDo : AddEditToDoEvent
+    object DeleteToDo : AddEditToDoEvent
 }

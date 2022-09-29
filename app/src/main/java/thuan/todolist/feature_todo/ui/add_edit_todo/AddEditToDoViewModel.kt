@@ -1,5 +1,6 @@
 package thuan.todolist.feature_todo.ui.add_edit_todo
 
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import thuan.todolist.feature_todo.domain.model.GroupToDo
@@ -11,17 +12,14 @@ import thuan.todolist.feature_todo.domain.util.ToDoUtils
 
 class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
-    
+
     val latestState = MutableLiveData<UIEvent>()
     val toDoId = MutableLiveData<Long>()
-
     val todoTitle = MutableLiveData("")
-
     val todoDescription = MutableLiveData("")
-
     val todoDateAndTime = MutableLiveData("Date not set")
-    val isTimeSet = MutableLiveData(false)
-
+    val isTimeSet: MutableLiveData<Boolean> = MutableLiveData()
+    val isDone: MutableLiveData<Boolean> = MutableLiveData()
     val groupName = MutableLiveData("Default")
 
     init {
@@ -29,7 +27,9 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         todoTitle.value = toDo?.title
         todoDescription.value = toDo?.description
         todoDateAndTime.value = toDo?.dateAndTime
-        groupName.value = toDo?.groupName
+        isTimeSet.value = toDo!!.dateAndTime != "Time not set"
+        isDone.value = toDo.isCompleted
+        groupName.value = toDo.groupName
     }
 
     fun getCurrentToDo(): ToDo {
@@ -38,7 +38,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
             title = todoTitle.value.toString(),
             description = todoDescription.value.toString(),
             dateAndTime = todoDateAndTime.value.toString(),
-            isCompleted = toDo?.isCompleted ?: false,
+            isCompleted = isDone.value ?: false,
             groupName = groupName.value.toString(),
             isExpired = toDo?.isExpired ?: false
         )
@@ -56,6 +56,10 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
 
             is AddEditToDoEvent.EnteredDateAndTime -> {
                 todoDateAndTime.value = event.dateAndTime
+            }
+
+            is AddEditToDoEvent.EnteredIsDone -> {
+                isDone.value = event.isCompleted
             }
 
             is AddEditToDoEvent.EnteredGroupName -> {
@@ -76,6 +80,12 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
             is AddEditToDoEvent.SaveToDo -> {
                 saveToDo()
             }
+            AddEditToDoEvent.DeleteToDo -> {
+                viewModelScope.launch {
+                    toDoUseCases.deleteToDo(toDo!!)
+                    latestState.value = UIEvent.DeleteToDoSuccess("ToDo deleted")
+                }
+            }
         }
     }
 
@@ -84,6 +94,8 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         val description = todoDescription.value
         val dateAndTime = todoDateAndTime.value
         val groupName = groupName.value
+        Log.i(TAG, "saveToDo: $title, $description, $dateAndTime, $groupName")
+        val isDone = isDone.value
 
         if (toDo!!.id == -1L) {
             viewModelScope.launch {
@@ -94,12 +106,11 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             title = title.toString(),
                             description = description.toString(),
                             dateAndTime = dateAndTime.toString(),
-                            isCompleted = false,
+                            isCompleted = isDone ?: false,
                             groupName = groupName.toString(),
                             isExpired = ToDoUtils.isExpired(dateAndTime.toString())
                         )
                     )
-
                     latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
                 } catch (e: InvalidToDoException) {
                     latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save todo")
@@ -114,7 +125,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             title = title.toString(),
                             description = description.toString(),
                             dateAndTime = dateAndTime.toString(),
-                            isCompleted = toDo.isCompleted,
+                            isCompleted = isDone ?: false,
                             groupName = groupName.toString(),
                             isExpired = ToDoUtils.isExpired(dateAndTime.toString())
                         )
@@ -134,6 +145,8 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     sealed class UIEvent {
         data class ShowSnackBar(val message: String) : UIEvent()
         data class SaveToDoSuccess(val message: String) : UIEvent()
+        data class DeleteToDoSuccess(val message: String) : AddEditToDoViewModel.UIEvent()
+
         object None : UIEvent()
     }
 }

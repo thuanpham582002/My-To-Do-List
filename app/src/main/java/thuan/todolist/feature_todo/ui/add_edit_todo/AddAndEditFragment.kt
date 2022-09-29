@@ -1,6 +1,7 @@
 package thuan.todolist.feature_todo.ui.add_edit_todo
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,15 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.databinding.FragmentAddEditBinding
 import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
+import thuan.todolist.feature_todo.ui.add_edit_todo.components.AlertDeleteBottomSheet
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogAddGroup
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogQuitWithOutSaving
-import thuan.todolist.feature_todo.ui.add_edit_todo.components.time_date_picker.DateAndTimePickerBottomSheet
+import thuan.todolist.feature_todo.ui.add_edit_todo.components.DateAndTimePickerBottomSheet
+import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionDeleteToDo
+import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionSetTime
 
 const val TAG = "AddAndEditFragment"
 
@@ -30,10 +36,12 @@ const val TAG = "AddAndEditFragment"
  *  - SupportFragmentManager: Fragment in Fragment or Activity
  */
 
-class AddAndEditFragment : Fragment() {
+class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
     private lateinit var binding: FragmentAddEditBinding
     private lateinit var viewModel: AddEditToDoViewModel
     private lateinit var listPopUpGroup: ListPopupWindow
+    private lateinit var alertDeleteBottomSheet: AlertDeleteBottomSheet
+    private lateinit var dateAndTimePickerBottomSheet: DateAndTimePickerBottomSheet
     private var listGroup: List<String> = listOf()
 
     override fun onCreateView(
@@ -42,13 +50,14 @@ class AddAndEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddEditBinding.inflate(inflater, container, false)
+        setupViewModel()
+        alertDeleteBottomSheet = AlertDeleteBottomSheet.newInstance(this)
+        dateAndTimePickerBottomSheet = DateAndTimePickerBottomSheet.newInstance(this)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupViewModel()
         setupToolbar()
         setupListPopUpGroup()
         setData()
@@ -67,6 +76,7 @@ class AddAndEditFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeToObservers() {
+        // Ger event from intent
         viewModel.latestState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AddEditToDoViewModel.UIEvent.ShowSnackBar -> {
@@ -82,23 +92,29 @@ class AddAndEditFragment : Fragment() {
                         viewModel.todoDescription.value!!,
                         viewModel.todoDateAndTime.value!!,
                     )
-                    requireActivity().onBackPressed()
+                    findNavController().popBackStack()
                 }
                 AddEditToDoViewModel.UIEvent.None -> {}
+                is AddEditToDoViewModel.UIEvent.DeleteToDoSuccess -> {
+                    showSnackBar(state.message)
+                    findNavController().popBackStack()
+                }
             }
         }
         viewModel.isTimeSet.observe(viewLifecycleOwner) { isTimeSet ->
             if (isTimeSet) {
                 binding.deleteDateAndTime.visibility = View.VISIBLE
                 val img = requireContext().getDrawable(thuan.todolist.R.drawable.ic_timer)
-                img?.setBounds(0, 0, 60, 60)
-                binding.tvTimeAndDate.setCompoundDrawables(img, null, null, null)
+                binding.tvTimeAndDate.icon = img
             } else {
                 binding.deleteDateAndTime.visibility = View.GONE
                 val img = requireContext().getDrawable(thuan.todolist.R.drawable.ic_timer_off)
-                img?.setBounds(0, 0, 60, 60)
-                binding.tvTimeAndDate.setCompoundDrawables(img, null, null, null)
+                binding.tvTimeAndDate.icon = img
             }
+        }
+
+        viewModel.todoDateAndTime.observe(viewLifecycleOwner) {
+            binding.tvTimeAndDate.text = it
         }
     }
 
@@ -112,10 +128,8 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
-
                 override fun afterTextChanged(s: Editable?) {
                     viewModel.onEvent(AddEditToDoEvent.EnteredTitle(s.toString()))
                 }
@@ -129,10 +143,8 @@ class AddAndEditFragment : Fragment() {
                     after: Int
                 ) {
                 }
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
-
                 override fun afterTextChanged(s: Editable?) {
                     if (s.toString().isNotEmpty()) {
                         viewModel.onEvent(AddEditToDoEvent.EnteredDescription(s.toString()))
@@ -145,12 +157,7 @@ class AddAndEditFragment : Fragment() {
             }
 
             tvTimeAndDate.setOnClickListener {
-                DateAndTimePickerBottomSheet {
-                    tvTimeAndDate.text = it
-                    deleteDateAndTime.visibility = View.VISIBLE
-                    viewModel.isTimeSet.value = true
-                    viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime(it))
-                }.show(
+                dateAndTimePickerBottomSheet.show(
                     childFragmentManager,
                     "DateAndTimePickerBottomSheet"
                 )
@@ -164,23 +171,38 @@ class AddAndEditFragment : Fragment() {
                 it.visibility = View.GONE
             }
 
+            switchIsDone.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.onEvent(AddEditToDoEvent.EnteredIsDone(isChecked))
+            }
+
             btnAddGroup.setOnClickListener {
                 DialogAddGroup.show(requireContext()) { groupName ->
                     viewModel.onEvent(AddEditToDoEvent.SaveGroup(groupName))
                 }
                 Log.i(TAG, "onUIClick: btnAddGroup")
             }
-
             onClickToolBar()
+
+            btnDelete.setOnClickListener {
+
+                alertDeleteBottomSheet.show(childFragmentManager, "AlertDeleteBottomSheet")
+                Log.i(TAG, "onUIClick: $alertDeleteBottomSheet.is")
+            }
         }
     }
 
 
     private fun setData() {
-        binding.etTitle.setText(viewModel.todoTitle.value)
-        binding.etDescription.setText(viewModel.todoDescription.value)
-        binding.tvTimeAndDate.text = viewModel.todoDateAndTime.value
-        binding.tvGroup.text = viewModel.groupName.value
+        binding.apply {
+            etTitle.setText(viewModel.todoTitle.value)
+            etDescription.setText(viewModel.todoDescription.value)
+            tvTimeAndDate.text = viewModel.todoDateAndTime.value
+            tvGroup.text = viewModel.groupName.value
+            if (AddAndEditFragmentArgs.fromBundle(requireArguments()).todo!!.title.isEmpty()) {
+                btnDelete.visibility = View.GONE
+            }
+            switchIsDone.isChecked = viewModel.isDone.value!!
+        }
     }
 
     private fun setupToolbar() {
@@ -192,16 +214,20 @@ class AddAndEditFragment : Fragment() {
         }
     }
 
+    private fun checkQuitWithoutSave() {
+        if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
+            DialogQuitWithOutSaving.show(requireContext()) {
+                findNavController().popBackStack()
+            }
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
     private fun onClickToolBar() {
         binding.apply {
             toolbar.setNavigationOnClickListener {
-                if (viewModel.getCurrentToDo() != AddAndEditFragmentArgs.fromBundle(requireArguments()).todo) {
-                    DialogQuitWithOutSaving.show(requireContext()) {
-                        viewModel.onEvent(AddEditToDoEvent.SaveToDo)
-                    }
-                } else {
-                    requireActivity().onBackPressed()
-                }
+                checkQuitWithoutSave()
             }
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -236,6 +262,7 @@ class AddAndEditFragment : Fragment() {
             listPopUpGroup.setOnItemClickListener { _, _, position, _ ->
                 binding.tvGroup.text = listGroup[position]
                 viewModel.onEvent(AddEditToDoEvent.EnteredGroupName(listGroup[position]))
+                Log.i(TAG, "setupListPopUpGroup: ${listGroup[position]}")
                 listPopUpGroup.dismiss()
             }
         }
@@ -243,5 +270,29 @@ class AddAndEditFragment : Fragment() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+
+    //  handle event back press
+    override fun onAttach(context: Context) {
+        Log.i("TodoFrag", "onAttach")
+        super.onAttach(context)
+        val callback: OnBackPressedCallback = object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                checkQuitWithoutSave()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun deleteToDo() {
+        viewModel.onEvent(AddEditToDoEvent.DeleteToDo)
+    }
+
+    override fun setTime(dateAndTime: String) {
+        Log.i(TAG, "setTime: $dateAndTime")
+        viewModel.isTimeSet.value = true
+        viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime(dateAndTime))
     }
 }
