@@ -19,6 +19,7 @@ data class ToDo(
     val dateAndTime: String,
     @ColumnInfo(name = "todo_is_completed")
     val isCompleted: Boolean,
+
     val isExpired: Boolean,
     @ColumnInfo(name = "group_name")
     val groupName: String

@@ -25,5 +25,7 @@ class ToDoDiffUtil(
                 && oldList[oldItemPosition].description == newList[newItemPosition].description
                 && oldList[oldItemPosition].dateAndTime == newList[newItemPosition].dateAndTime
                 && oldList[oldItemPosition].isCompleted == newList[newItemPosition].isCompleted
+                && oldList[oldItemPosition].groupName == newList[newItemPosition].groupName
+                && oldList[oldItemPosition].isExpired == newList[newItemPosition].isExpired
     }
 }

@@ -5,6 +5,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.RequiresApi
+import thuan.todolist.feature_todo.domain.service.constant.TODO_DESCRIPTION
+import thuan.todolist.feature_todo.domain.service.constant.TODO_ID
+import thuan.todolist.feature_todo.domain.service.constant.TODO_TITLE
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,8 +22,8 @@ fun toDoScheduleNotification(
 
     if (date == "Time not set")
         return
-
-    // Intent to start the Broadcast Receiver
+    val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
+    val timeTriggerInMillis = sdf.parse(date)!!.time
     val broadcastIntent = Intent(
         context, ToDoNotificationReceiver::class.java
     ).apply {
@@ -28,37 +32,20 @@ fun toDoScheduleNotification(
         putExtra(TODO_ID, id)
     }
 
-    val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-    val timeTriggerInMillis = sdf.parse(date)!!.time
-
-    val pIntent =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.getBroadcast(
-                context,
-                id.toInt(),
-                broadcastIntent,
-                //PendingIntent.FLAG_IMMUTABLE is used to prevent the PendingIntent from being updated
-                // after it is created
-                // PendingInternt.FlAG_UPDATE_CURRENT is used to update the pending intent
-                // if it already exists
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        } else {
-            TODO("VERSION.SDK_INT < M")
-        }
-
     // Setting up AlarmManager
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     if (timeTriggerInMillis > System.currentTimeMillis()) {
-        alarmMgr.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            timeTriggerInMillis,
-            pIntent
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmMgr.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                timeTriggerInMillis,
+                ToDoPendingIntent.getSchedulePendingIntent(context, broadcastIntent, id.toInt())
+            )
+        }
     }
 }
 
-fun toDoCancelNotification(context: Context, id: Long) {
+fun toDoCancelAlarmManager(context: Context, id: Long) {
     val broadcastIntent = Intent(
         context, ToDoNotificationReceiver::class.java
     )
@@ -74,4 +61,10 @@ fun toDoCancelNotification(context: Context, id: Long) {
     }
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmMgr.cancel(pIntent)
+}
+
+fun toDoDeleteNotification(context: Context, id: Long) {
+    val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+    notificationManager.cancel(id.toInt())
 }

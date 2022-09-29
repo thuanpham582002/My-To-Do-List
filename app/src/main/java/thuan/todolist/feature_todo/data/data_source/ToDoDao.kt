@@ -26,7 +26,7 @@ interface ToDoDao {
     fun getToDoNotDone(): LiveData<List<ToDo>>
 
     @Query("SELECT * FROM todo_table WHERE id = :id")
-    fun getToDoById(id: Int): ToDo
+    fun getToDoById(id: Long): ToDo
 
     @Insert()
     suspend fun insertToDo(toDo: ToDo): Long
