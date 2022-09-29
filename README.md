@@ -6,8 +6,8 @@ Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmMana
 ![Screenshot_1664013932](https://user-images.githubusercontent.com/95533596/192135445-a27e5a5a-4db0-488e-95fe-1c672ea9e312.png)
 ![Screenshot_1664237005](https://user-images.githubusercontent.com/95533596/192401673-868544d1-029e-4e13-83c3-16e4bb65aef5.png)
 ![Screenshot_1664014014](https://user-images.githubusercontent.com/95533596/192135456-7d47cb05-4a3d-4e4c-84cf-b4e5ae9b19ff.png)
-![Screenshot_1664014046](https://user-images.githubusercontent.com/95533596/192135458-345bbb8c-6e00-466d-aba5-d308c23f2643.png)
-![Screenshot_1664014061](https://user-images.githubusercontent.com/95533596/192135464-d836b439-08c8-4da4-8cb4-fbf2a0d22ee5.png)
+![Screenshot_1664446953](https://user-images.githubusercontent.com/95533596/193008267-5bf8e9b1-b283-4086-8458-683005704b3b.png)
+![Screenshot_1664447374](https://user-images.githubusercontent.com/95533596/193008331-0b032f34-d881-4f79-b223-19454bf6ada0.png)
 ## Current Features
 - Add and manage tasks
 - Multiple Task Lists
