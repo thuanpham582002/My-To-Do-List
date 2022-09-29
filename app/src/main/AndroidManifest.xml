@@ -39,7 +39,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name=".feature_todo.domain.service.ToDoSateReceiver" />
         <receiver android:name=".feature_todo.domain.service.ToDoNotificationReceiver" />
     </application>
 
