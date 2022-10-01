@@ -1,4 +1,4 @@
-package thuan.todolist.feature_todo.domain.service.constant
+package thuan.todolist.feature_todo.domain.service.constants
 
 const val TODO_TITLE = "todo_title"
 const val TODO_CHANNEL_ID = "channel_id"
