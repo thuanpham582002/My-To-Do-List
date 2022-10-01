@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.domain.service.constant.ACTION_DELETE
-import thuan.todolist.feature_todo.domain.service.constant.ACTION_DONE
-import thuan.todolist.feature_todo.domain.service.constant.TODO_ID
+import thuan.todolist.feature_todo.domain.service.constants.ACTION_DELETE
+import thuan.todolist.feature_todo.domain.service.constants.ACTION_DONE
+import thuan.todolist.feature_todo.domain.service.constants.TODO_ID
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 
 class ToDoSateReceiver : BroadcastReceiver() {

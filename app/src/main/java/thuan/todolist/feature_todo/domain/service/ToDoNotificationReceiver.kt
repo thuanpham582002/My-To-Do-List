@@ -1,6 +1,5 @@
 package thuan.todolist.feature_todo.domain.service
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,28 +13,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import thuan.todolist.di.Injection
-import thuan.todolist.feature_todo.domain.service.constant.TODO_CHANNEL_ID
-import thuan.todolist.feature_todo.domain.service.constant.TODO_DESCRIPTION
-import thuan.todolist.feature_todo.domain.service.constant.TODO_ID
-import thuan.todolist.feature_todo.domain.service.constant.TODO_TITLE
+import thuan.todolist.feature_todo.domain.service.constants.TODO_CHANNEL_ID
+import thuan.todolist.feature_todo.domain.service.constants.TODO_DESCRIPTION
+import thuan.todolist.feature_todo.domain.service.constants.TODO_ID
+import thuan.todolist.feature_todo.domain.service.constants.TODO_TITLE
+import thuan.todolist.feature_todo.domain.service.utils.NotificationUtils
 import thuan.todolist.feature_todo.ui.add_edit_todo.AddAndEditFragmentArgs
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 
 class ToDoNotificationReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context, intent: Intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel
-            val name = "Alarm ToDo"
-            val descriptionText = "Alarm details"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val mChannel = NotificationChannel(TODO_CHANNEL_ID, name, importance)
-            mChannel.description = descriptionText
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannel)
-        }
-
         CoroutineScope(Dispatchers.IO).launch {
             // Generate an Id for each notification
             val id = intent.getLongExtra(TODO_ID, 0)
@@ -73,7 +61,7 @@ class ToDoNotificationReceiver : BroadcastReceiver() {
 
             mBuilder.addAction(
                 android.R.drawable.ic_menu_delete,
-                "Delete Todo",
+                NotificationUtils.getStringByLocal(context, thuan.todolist.R.string.delete),
                 ToDoPendingIntent.getDeletePendingIntent(
                     context,
                     id
@@ -82,7 +70,7 @@ class ToDoNotificationReceiver : BroadcastReceiver() {
 
             mBuilder.addAction(
                 thuan.todolist.R.drawable.ic_done,
-                "Mark Done",
+                NotificationUtils.getStringByLocal(context, thuan.todolist.R.string.mark_done),
                 ToDoPendingIntent.getDonePendingIntent(
                     context,
                     id
@@ -104,3 +92,4 @@ class ToDoNotificationReceiver : BroadcastReceiver() {
         }
     }
 }
+

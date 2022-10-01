@@ -5,11 +5,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.annotation.RequiresApi
-import thuan.todolist.feature_todo.domain.service.constant.TODO_DESCRIPTION
-import thuan.todolist.feature_todo.domain.service.constant.TODO_ID
-import thuan.todolist.feature_todo.domain.service.constant.TODO_TITLE
-import java.text.SimpleDateFormat
+import thuan.todolist.feature_todo.domain.service.constants.TODO_DESCRIPTION
+import thuan.todolist.feature_todo.domain.service.constants.TODO_ID
+import thuan.todolist.feature_todo.domain.service.constants.TODO_TITLE
 import java.util.*
 
 fun toDoScheduleNotification(
@@ -17,13 +15,12 @@ fun toDoScheduleNotification(
     id: Long,
     title: String,
     description: String,
-    date: String
+    date: Date?
 ) {
 
-    if (date == "Time not set")
+    if (date == null)
         return
-    val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-    val timeTriggerInMillis = sdf.parse(date)!!.time
+    val timeTriggerInMillis = date.time
     val broadcastIntent = Intent(
         context, ToDoNotificationReceiver::class.java
     ).apply {

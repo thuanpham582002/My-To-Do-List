@@ -6,9 +6,9 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import thuan.todolist.feature_todo.domain.service.constant.ACTION_DELETE
-import thuan.todolist.feature_todo.domain.service.constant.ACTION_DONE
-import thuan.todolist.feature_todo.domain.service.constant.TODO_ID
+import thuan.todolist.feature_todo.domain.service.constants.ACTION_DELETE
+import thuan.todolist.feature_todo.domain.service.constants.ACTION_DONE
+import thuan.todolist.feature_todo.domain.service.constants.TODO_ID
 
 object ToDoPendingIntent {
     fun getSchedulePendingIntent(context: Context, intent: Intent, id: Int): PendingIntent {
