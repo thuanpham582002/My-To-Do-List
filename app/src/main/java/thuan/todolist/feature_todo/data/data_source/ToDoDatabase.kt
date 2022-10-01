@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.domain.model.converters.DateConverters
 
 
 @Database(
@@ -16,6 +18,7 @@ import thuan.todolist.feature_todo.domain.model.ToDo
 /**
  * class ToDoDatabase is used to create database
  */
+@TypeConverters(DateConverters::class)
 abstract class ToDoDatabase : RoomDatabase() {
     abstract val toDoDao: ToDoDao
 
@@ -31,6 +34,7 @@ abstract class ToDoDatabase : RoomDatabase() {
                     ToDoDatabase::class.java,
                     DATABASE_NAME
                 )
+                    .addTypeConverter(DateConverters())
                     .fallbackToDestructiveMigration().build()
             }
         }

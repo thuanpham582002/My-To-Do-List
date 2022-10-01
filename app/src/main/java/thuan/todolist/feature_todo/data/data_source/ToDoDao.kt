@@ -28,7 +28,7 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_table WHERE id = :id")
     fun getToDoById(id: Long): ToDo
 
-    @Insert()
+    @Insert
     suspend fun insertToDo(toDo: ToDo): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
