@@ -21,6 +21,7 @@ Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmMana
 <img width="200" src="https://user-images.githubusercontent.com/95533596/193406348-b3254af7-e6b8-4504-8ed8-c550979ece01.png">
 <img width="200" src="https://user-images.githubusercontent.com/95533596/193406189-31fadd14-4c0a-4f60-88ed-2a9b868aab9d.png">
 <img width="200" src="https://user-images.githubusercontent.com/95533596/193406212-5776b4f8-3978-4e2f-b750-94e78bb5f094.png">
+<img width="200" src="https://user-images.githubusercontent.com/95533596/193406826-db32fd97-811a-4b4d-be95-74545a900ede.png">
 
 ### Dark Mode
 |<img width="200" src="https://user-images.githubusercontent.com/95533596/193406408-13b77007-fb16-4d79-aaa5-e62b6742d648.png">
