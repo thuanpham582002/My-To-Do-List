@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="todo_preference_category_theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="todo_preference_category_theme_entry_values">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <string-array name="todo_preference_category_language_entries">
+        <item>English</item>
+        <item>Việt Nam</item>
+    </string-array>
+
+    <string-array name="todo_preference_category_language_entry_values">
+        <item>en</item>
+        <item>vi</item>
+    </string-array>
+    <string-array name="todo_preference_category_date_format_entries">
+        <item>HH:mm dd/MM/yyyy</item>
+        <item>dd/MM/yyyy HH:mm</item>
+        <item>MM/dd/yyyy HH:mm</item>
+        <item>yyyy/MM/dd HH:mm</item>
+    </string-array>
+    <string-array name="todo_preference_category_date_format_entry_values">
+        <item>HH:mm dd/MM/yyyy</item>
+        <item>dd/MM/yyyy HH:mm</item>
+        <item>MM/dd/yyyy HH:mm</item>
+        <item>yyyy/MM/dd HH:mm</item>
+    </string-array>
+
+</resources>
