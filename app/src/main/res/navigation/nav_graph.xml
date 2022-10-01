@@ -35,5 +35,17 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="thuan.todolist.feature_setting.ui.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutMeFragment"
+            app:destination="@id/aboutMeFragment"
+            app:enterAnim="@anim/anim_from_bottom"
+            app:exitAnim="@anim/anim_leave_from_top"
+            app:popEnterAnim="@anim/anim_from_top"
+            app:popExitAnim="@anim/anim_leave_from_bottom" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutMeFragment"
+        android:name="thuan.todolist.feature_setting.ui.AboutMeFragment"
+        android:label="AboutMeFragment" />
 </navigation>

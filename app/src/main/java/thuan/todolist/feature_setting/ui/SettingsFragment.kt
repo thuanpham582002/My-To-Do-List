@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
 
@@ -43,6 +45,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // inflate toolbar
+        this.findPreference<Preference>("todo_about_me")?.setOnPreferenceClickListener {
+            findNavController().navigate(thuan.todolist.R.id.action_settingsFragment_to_aboutMeFragment)
+            true
+        }
     }
 
 

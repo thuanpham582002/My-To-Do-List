@@ -37,7 +37,7 @@
     <string name="todo_preference_category_customize_title">Tùy chỉnh</string>
     <string name="todo_preference_category_theme_summary">Chế độ sáng</string>
     <string name="todo_preference_category_theme_title">Chế độ</string>
-    <string name="todo_preference_category_about_me_title">Thông tin</string>
+    <string name="todo_preference_category_about_me_title">Thông tin tác giả</string>
     <string name="todo_preference_category_about_me_summary">Thuận - D20 Mobile ProPtit</string>
     <string name="search_to_do">Tìm kiếm công việc</string>
     <string name="selected">đã chọn</string>
@@ -49,4 +49,6 @@
     <string name="mark_done">Đánh dấu hoàn thành</string>
     <string name="settings">Cài đặt</string>
     <string name="my_to_do">Công việc của tôi</string>
+    <string name="about_me">Phạm Tiến Thuận - ProPTIT</string>
+    <string name="proptit_slogan">Lập Trình PTIT, Lập trình từ trái tim</string>
 </resources>
