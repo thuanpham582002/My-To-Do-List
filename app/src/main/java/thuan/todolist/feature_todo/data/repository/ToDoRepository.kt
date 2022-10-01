@@ -1,7 +1,6 @@
 package thuan.todolist.feature_todo.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.room.Query
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.GroupWithToDos
 import thuan.todolist.feature_todo.domain.model.ToDo
