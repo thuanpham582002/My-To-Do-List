@@ -1,5 +1,7 @@
 package thuan.todolist.feature_setting.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +34,31 @@ class AboutMeFragment : Fragment() {
     private fun onUIClick() {
         binding.toolbar.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.tvFbAboutMe.setOnClickListener {
+            openFacebookIntent(binding.tvFbAboutMe.text.split("/")[3])
+        }
+
+        binding.tvFbAboutProptit.setOnClickListener {
+            openFacebookIntent(binding.tvFbAboutProptit.text.split("/")[3])
+        }
+    }
+
+    private fun openFacebookIntent(fbID: String) {
+        try {
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("fb://page/$fbID")
+            ).apply {
+                startActivity(this)
+            }
+        } catch (e: Exception) {
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.facebook.com/$fbID")
+            ).apply {
+                startActivity(this)
+            }
         }
     }
 }

@@ -23,10 +23,7 @@ class ToDoBootCompleteReceiver : BroadcastReceiver() {
                     it.forEach { todo ->
                         toDoScheduleNotification(
                             context,
-                            todo.id,
-                            todo.title,
-                            todo.description,
-                            todo.dateAndTime
+                            todo
                         )
                     }
                 }

@@ -5,28 +5,25 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.service.constants.TODO_DESCRIPTION
 import thuan.todolist.feature_todo.domain.service.constants.TODO_ID
 import thuan.todolist.feature_todo.domain.service.constants.TODO_TITLE
-import java.util.*
 
 fun toDoScheduleNotification(
     context: Context,
-    id: Long,
-    title: String,
-    description: String,
-    date: Date?
+    toDo: ToDo
 ) {
 
-    if (date == null)
+    if (toDo.dateAndTime == null || toDo.isCompleted)
         return
-    val timeTriggerInMillis = date.time
+    val timeTriggerInMillis = toDo.dateAndTime.time
     val broadcastIntent = Intent(
         context, ToDoNotificationReceiver::class.java
     ).apply {
-        putExtra(TODO_TITLE, title)
-        putExtra(TODO_DESCRIPTION, description)
-        putExtra(TODO_ID, id)
+        putExtra(TODO_TITLE, toDo.title)
+        putExtra(TODO_DESCRIPTION, toDo.description)
+        putExtra(TODO_ID, toDo.id)
     }
 
     // Setting up AlarmManager
@@ -36,7 +33,11 @@ fun toDoScheduleNotification(
             alarmMgr.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 timeTriggerInMillis,
-                ToDoPendingIntent.getSchedulePendingIntent(context, broadcastIntent, id.toInt())
+                ToDoPendingIntent.getSchedulePendingIntent(
+                    context,
+                    broadcastIntent,
+                    toDo.id.toInt()
+                )
             )
         }
     }

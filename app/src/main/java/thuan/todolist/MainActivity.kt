@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.delay
 import thuan.todolist.databinding.ActivityMainBinding
 import thuan.todolist.feature_setting.constants.APP_LANGUAGE
 import thuan.todolist.feature_setting.constants.APP_THEME_MODE

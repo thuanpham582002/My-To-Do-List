@@ -37,10 +37,7 @@ fun isChecking(checkBox: CheckBox, toDo: ToDo, viewModel: ToDoViewModel) {
             viewModel.onEvent(ToDosEvent.UpdateToDo(toDo.copy(isCompleted = false)))
             toDoScheduleNotification(
                 checkBox.context,
-                toDo.id,
-                toDo.title,
-                toDo.description,
-                toDo.dateAndTime
+                toDo
             )
         }
     }

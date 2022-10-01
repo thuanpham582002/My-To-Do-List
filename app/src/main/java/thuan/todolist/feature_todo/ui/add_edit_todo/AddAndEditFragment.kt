@@ -88,10 +88,7 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
                     showSnackBar(state.message)
                     toDoScheduleNotification(
                         requireContext(),
-                        viewModel.toDoId.value!!,
-                        viewModel.todoTitle.value!!,
-                        viewModel.todoDescription.value!!,
-                        viewModel.todoDateAndTime.value,
+                        viewModel.getCurrentToDo()
                     )
                     findNavController().popBackStack()
                 }
