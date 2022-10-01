@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 @Entity(tableName = "todo_table")
@@ -16,7 +17,7 @@ data class ToDo(
     @ColumnInfo(name = "todo_description")
     val description: String,
     @ColumnInfo(name = "todo_date_and_time")
-    val dateAndTime: String,
+    val dateAndTime: Date?,
     @ColumnInfo(name = "todo_is_completed")
     val isCompleted: Boolean,
 
