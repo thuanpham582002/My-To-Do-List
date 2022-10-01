@@ -1,16 +1,20 @@
 package thuan.todolist.feature_todo.ui.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -44,12 +48,10 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         isViewCreated = true
         setupViewModel()
         setupToolbar()
@@ -131,7 +133,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     private fun setupSpinnerGroup() {
         viewModel.getGroupToDo().observe(viewLifecycleOwner) {
-            val group = listOf<String>("All") + it.map { group -> group.name }
+            val group = listOf(resources.getString(R.string.all)) + it.map { group -> group.name }
             spinner = binding.spinnerGroup
             val adapter =
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, group)
@@ -154,10 +156,9 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     private fun setupToolbar() {
         binding.apply {
-            toolbar.title = "My To Do List"
-            toolbar.inflateMenu(R.menu.menu_main)
-            setActionSearchToDo(toolbar.menu)
-            setOnMenuItemClickListener(toolbar)
+            toolbar.toolbar.inflateMenu(R.menu.menu_main)
+            setActionSearchToDo(toolbar.toolbar.menu)
+            setOnMenuItemClickListener(toolbar.toolbar)
         }
     }
 
@@ -169,7 +170,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
                     true
                 }
                 R.id.action_settings -> {
-                    Log.i(TAG, "setOnMenuItemClickListener: setting")
+                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
                     true
                 }
                 else -> false
@@ -188,7 +189,19 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     private fun setActionSearchToDo(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Search To Do"
+
+        // set text color
+        val editText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+        AppCompatDelegate.getDefaultNightMode().let { mode ->
+            if (mode == AppCompatDelegate.MODE_NIGHT_YES) {
+                editText.setHintTextColor(Color.GRAY)
+                editText.setTextColor(Color.BLACK)
+            } else {
+                editText.setHintTextColor(Color.DKGRAY)
+                editText.setTextColor(Color.WHITE)
+            }
+        }
+        searchView.queryHint = resources.getString(R.string.search_to_do)
         Log.i(TAG, "setActionSearchToDo: ${searchView.query}")
         searchView.setOnQueryTextListener(this@HomeFragment)
     }
@@ -226,7 +239,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
                     val items = selectionTracker.selection.size()
                     if (items > 0) {
-                        actionMode?.title = "$items selected"
+                        actionMode?.title = "$items ${resources.getString(R.string.selected)}"
                     } else {
                         actionMode?.finish()
                     }
@@ -253,7 +266,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
             actionMode =
                 (requireActivity() as MainActivity).startSupportActionMode(this@HomeFragment)
             actionMode?.title =
-                "${selectionTracker.selection.size()} selected"
+                "${selectionTracker.selection.size()} ${resources.getString(R.string.selected)}"
         }
     }
 
@@ -262,6 +275,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         binding.fabAdd.hide()
         mode?.menuInflater?.inflate(R.menu.menu_delete, menu)
+
         return true
     }
 

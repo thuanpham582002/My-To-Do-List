@@ -3,8 +3,6 @@ package thuan.todolist.feature_todo.ui.add_edit_todo
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,12 +18,14 @@ import com.google.android.material.snackbar.Snackbar
 import thuan.todolist.databinding.FragmentAddEditBinding
 import thuan.todolist.di.Injection
 import thuan.todolist.feature_todo.domain.service.toDoScheduleNotification
+import thuan.todolist.feature_todo.domain.util.ToDoUtils
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.AlertDeleteBottomSheet
+import thuan.todolist.feature_todo.ui.add_edit_todo.components.DateAndTimePickerBottomSheet
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogAddGroup
 import thuan.todolist.feature_todo.ui.add_edit_todo.components.DialogQuitWithOutSaving
-import thuan.todolist.feature_todo.ui.add_edit_todo.components.DateAndTimePickerBottomSheet
 import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionDeleteToDo
 import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionSetTime
+import java.util.*
 
 const val TAG = "AddAndEditFragment"
 
@@ -90,7 +91,7 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
                         viewModel.toDoId.value!!,
                         viewModel.todoTitle.value!!,
                         viewModel.todoDescription.value!!,
-                        viewModel.todoDateAndTime.value!!,
+                        viewModel.todoDateAndTime.value,
                     )
                     findNavController().popBackStack()
                 }
@@ -114,60 +115,39 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         }
 
         viewModel.todoDateAndTime.observe(viewLifecycleOwner) {
-            binding.tvTimeAndDate.text = it
+            binding.tvTimeAndDate.text = ToDoUtils.dateToString(it)
         }
     }
 
     private fun onUIClick() {
         binding.apply {
-            etTitle.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                    viewModel.onEvent(AddEditToDoEvent.EnteredTitle(s.toString()))
-                }
-            })
-
-            etDescription.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.toString().isNotEmpty()) {
-                        viewModel.onEvent(AddEditToDoEvent.EnteredDescription(s.toString()))
-                    }
-                }
-            })
+            etTitle.doAfterTextChanged { s ->
+                viewModel.onEvent(AddEditToDoEvent.EnteredTitle(s.toString()))
+            }
+            etDescription.doAfterTextChanged { s ->
+                viewModel.onEvent(AddEditToDoEvent.EnteredDescription(s.toString()))
+            }
 
             tvGroup.setOnClickListener {
                 listPopUpGroup.show()
             }
 
             tvTimeAndDate.setOnClickListener {
-                dateAndTimePickerBottomSheet.show(
-                    childFragmentManager,
-                    "DateAndTimePickerBottomSheet"
-                )
+                if (dateAndTimePickerBottomSheet.isAdded) {
+                    dateAndTimePickerBottomSheet.dismiss()
+                } else {
+                    dateAndTimePickerBottomSheet.show(
+                        childFragmentManager,
+                        "DateAndTimePickerBottomSheet"
+                    )
+                }
                 Log.i(TAG, "onUIClick: tvTimeAndDate")
             }
 
             deleteDateAndTime.setOnClickListener {
                 viewModel.isTimeSet.value = false
-                tvTimeAndDate.text = String.format("Time not set")
-                viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime("Time not set"))
+                tvTimeAndDate.text = resources.getString(thuan.todolist.R.string.time_not_set)
+                viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime(null))
                 it.visibility = View.GONE
             }
 
@@ -184,8 +164,11 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
             onClickToolBar()
 
             btnDelete.setOnClickListener {
-
-                alertDeleteBottomSheet.show(childFragmentManager, "AlertDeleteBottomSheet")
+                if (alertDeleteBottomSheet.isAdded) {
+                    alertDeleteBottomSheet.dismiss()
+                } else {
+                    alertDeleteBottomSheet.show(childFragmentManager, "AlertDeleteBottomSheet")
+                }
                 Log.i(TAG, "onUIClick: $alertDeleteBottomSheet.is")
             }
         }
@@ -196,7 +179,7 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         binding.apply {
             etTitle.setText(viewModel.todoTitle.value)
             etDescription.setText(viewModel.todoDescription.value)
-            tvTimeAndDate.text = viewModel.todoDateAndTime.value
+            tvTimeAndDate.text = ToDoUtils.dateToString(viewModel.todoDateAndTime.value)
             tvGroup.text = viewModel.groupName.value
             if (AddAndEditFragmentArgs.fromBundle(requireArguments()).todo!!.title.isEmpty()) {
                 btnDelete.visibility = View.GONE
@@ -207,10 +190,10 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
 
     private fun setupToolbar() {
         binding.apply {
-            toolbar.title = "My To Do"
-            binding.toolbar.inflateMenu(thuan.todolist.R.menu.menu_save)
+            toolbar.toolbar.title = resources.getString(thuan.todolist.R.string.my_to_do)
+            toolbar.toolbar.inflateMenu(thuan.todolist.R.menu.menu_save)
             // display back button
-            toolbar.setNavigationIcon(thuan.todolist.R.drawable.ic_close)
+            toolbar.toolbar.setNavigationIcon(thuan.todolist.R.drawable.ic_arrow_back)
         }
     }
 
@@ -226,10 +209,10 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
 
     private fun onClickToolBar() {
         binding.apply {
-            toolbar.setNavigationOnClickListener {
+            toolbar.toolbar.setNavigationOnClickListener {
                 checkQuitWithoutSave()
             }
-            toolbar.setOnMenuItemClickListener {
+            toolbar.toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     thuan.todolist.R.id.action_save -> {
                         viewModel.onEvent(AddEditToDoEvent.SaveToDo)
@@ -290,7 +273,7 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         viewModel.onEvent(AddEditToDoEvent.DeleteToDo)
     }
 
-    override fun setTime(dateAndTime: String) {
+    override fun setTime(dateAndTime: Date?) {
         Log.i(TAG, "setTime: $dateAndTime")
         viewModel.isTimeSet.value = true
         viewModel.onEvent(AddEditToDoEvent.EnteredDateAndTime(dateAndTime))

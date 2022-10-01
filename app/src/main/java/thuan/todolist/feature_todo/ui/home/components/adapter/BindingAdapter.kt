@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
@@ -52,6 +53,13 @@ fun isStriked(textView: TextView, isCompleted: Boolean, isExpired: Boolean) {
     } else if (isExpired) {
         textView.setTextColor(Color.RED)
     } else {
-        textView.setTextColor(Color.BLACK)
+        // check if night mode is on
+        AppCompatDelegate.getDefaultNightMode().let { mode ->
+            if (mode == AppCompatDelegate.MODE_NIGHT_YES) {
+                textView.setTextColor(Color.WHITE)
+            } else {
+                textView.setTextColor(Color.BLACK)
+            }
+        }
     }
 }

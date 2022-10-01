@@ -11,4 +11,5 @@
         app:showAsAction="ifRoom|collapseActionView" />
     <!--    need collapseAccountActionView to collapse the search view when click on the search icon again-->
 
+
 </menu>

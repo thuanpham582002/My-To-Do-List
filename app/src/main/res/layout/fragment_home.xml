@@ -6,16 +6,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background"
         tools:context=".feature_todo.ui.home.HomeFragment">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <include
             android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/toolbar_color"
-            android:theme="@style/Base.Theme.ToDoList2"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -82,7 +79,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/none"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
                 <Button
@@ -94,7 +90,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/title"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
                 <Button
@@ -106,7 +101,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/date"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -130,7 +124,6 @@
                     android:checked="true"
                     android:gravity="center"
                     android:text="@string/all"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
                 <Button
@@ -142,7 +135,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/completed"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
                 <Button
@@ -154,7 +146,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/uncompleted"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -178,7 +169,6 @@
                     android:checked="true"
                     android:gravity="center"
                     android:text="@string/ascending"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
 
                 <Button
@@ -190,7 +180,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/descending"
-                    android:textColor="#000000"
                     android:textSize="@dimen/title3_size" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 

@@ -1,19 +1,23 @@
 package thuan.todolist.feature_todo.ui.add_edit_todo.components
 
+import android.icu.util.GregorianCalendar
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import thuan.todolist.databinding.BottomsheetDateAndTimeBinding
+import thuan.todolist.feature_todo.domain.util.ToDoUtils
+import thuan.todolist.feature_todo.ui.add_edit_todo.constants.ACTION_SET_TIME_AND_DATE
 import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionSetTime
 import java.util.*
+
 
 class DateAndTimePickerBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomsheetDateAndTimeBinding
     private lateinit var actionSetTime: ActionSetTime
-    private val ACTION_SET_TIME_AND_DATE = "action_set_time_and_date"
 
     companion object {
         fun newInstance(actionSetTime: ActionSetTime) = DateAndTimePickerBottomSheet().apply {
@@ -34,28 +38,30 @@ class DateAndTimePickerBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvDetailTime.text = getCurrentTimeAndDate()
+        binding.tvDetailTime.text = ToDoUtils.dateToString(getCurrentTimeAndDate())
         setOnClick()
     }
 
-    private fun getCurrentTimeAndDate(): String {
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun getCurrentTimeAndDate(): Date {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
-        return String.format("%02d:%02d %02d/%02d/%d", hour, minute, day, month, year)
+        return GregorianCalendar(year, month, day, hour, minute).time
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun setOnClick() {
         binding.apply {
             btnCancel.setOnClickListener {
                 cancelButtonClicked()
             }
-
             btnOK.setOnClickListener {
                 okButtonClicked()
             }
@@ -65,28 +71,23 @@ class DateAndTimePickerBottomSheet : BottomSheetDialogFragment() {
 
     private fun cancelButtonClicked() = this.dismiss()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun okButtonClicked() {
         actionSetTime.setTime(getDate())
         this.dismiss()
     }
 
 
-    private fun getDate(): String {
-        val hour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.timePicker.hour
-        } else {
-            "Error"
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun getDate(): Date {
+        binding.apply {
+            val year = datePicker.year
+            val month = datePicker.month
+            val dayOfMonth = datePicker.dayOfMonth
+            val hour = timePicker.hour
+            val minute = timePicker.minute
+            val date = GregorianCalendar(year, month, dayOfMonth, hour, minute)
+            return date.time
         }
-        val minute = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.timePicker.minute
-        } else {
-            "Error"
-        }
-
-        val day = binding.datePicker.dayOfMonth
-        val month = binding.datePicker.month + 1
-        val year = binding.datePicker.year
-
-        return String.format("%02d:%02d %02d/%02d/%d", hour, minute, day, month, year)
     }
 }

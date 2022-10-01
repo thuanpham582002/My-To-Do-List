@@ -6,11 +6,16 @@
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.254" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/a.xml" value="0.151" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_add.xml" value="0.1665" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_arrow_back.xml" value="0.2415" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.2415" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_close.xml" value="0.2405" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_delete.xml" value="0.254" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_done.xml" value="0.2415" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_filter_list.xml" value="0.2245" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.254" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_playlist_add.xml" value="0.194" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_search.xml" value="0.2" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_timer.xml" value="0.2415" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_timer_off.xml" value="0.2445" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/ic_to_do_list_svgrepo_com.xml" value="0.2175" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/drawable/text_input.xml" value="0.23" />
@@ -25,18 +30,26 @@
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_first.xml" value="0.18432971014492755" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_oder_popup.xml" value="0.24048913043478262" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_preference.xml" value="0.30572916666666666" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_second.xml" value="0.1921875" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_setting.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/fragment_settings.xml" value="0.4" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/ic_add.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/item_order_todo.xml" value="0.24048913043478262" />
-        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/item_todo.xml" value="0.264" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/item_todo.xml" value="0.25" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/layout_toolbar.xml" value="0.18385416666666668" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/order_todo.xml" value="0.1734375" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/setting_tool_bar.xml" value="0.19882246376811594" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/text_input.xml" value="0.2234375" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/layout/tool_bar.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/menu/menu_delete.xml" value="0.1921875" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/menu/menu_group_radio_btn_todo_order.xml" value="0.171875" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/menu/menu_main.xml" value="0.165625" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/menu/menu_order_todo.xml" value="0.259375" />
         <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/menu/menu_save.xml" value="0.2" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/xml/fragment_todo_preference.xml" value="0.2609375" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/xml/root_preferences.xml" value="0.2609375" />
+        <entry key="..\:/Users/thuan/AndroidStudioProjects/ToDoList2/app/src/main/res/xml/todo_preference.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/thuan/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.2546875" />
         <entry key="..\:/Users/thuan/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.31875" />
       </map>

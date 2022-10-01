@@ -2,18 +2,39 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ToDoList2" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeStyle">@style/Theme.ActionMode</item>
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Customize action Mode Style -->
+        <item name="actionModeStyle">@style/AppBaseThemeMaterial.ActionMode</item>
+        <!-- Change color Close Button in action mode       -->
+        <item name="actionModeCloseButtonStyle">@style/MyCloseButton</item>
+
     </style>
 
     <style name="Theme.ToDoList2" parent="Base.Theme.ToDoList2">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeStyle">@style/Theme.ActionMode</item>
+
     </style>
 
-    <style name="Theme.ActionMode" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/toolbar_color</item>
+    <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">?attr/colorPrimary</item>
+        <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
     </style>
 
+    <style name="MyCloseButton" parent="Widget.AppCompat.ActionButton.CloseMode">
+        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="ActionModeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="ToolBarTheme">
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+        <item name="colorControlNormal">?attr/colorOnPrimary</item>
+        <item name="textAllCaps">false</item>
+        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
+    </style>
+
+    <style name="MyOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
 </resources>

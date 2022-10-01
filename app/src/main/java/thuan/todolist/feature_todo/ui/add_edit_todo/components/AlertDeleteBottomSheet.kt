@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import thuan.todolist.databinding.BottomsheetDeleteAlertBinding
+import thuan.todolist.feature_todo.ui.add_edit_todo.constants.ACTION_DELETE
 import thuan.todolist.feature_todo.ui.add_edit_todo.utils.ActionDeleteToDo
 
 class AlertDeleteBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomsheetDeleteAlertBinding
-    private val ACTION_DELETE = "action_delete"
     lateinit var actionDeleteToDo: ActionDeleteToDo
 
     companion object {

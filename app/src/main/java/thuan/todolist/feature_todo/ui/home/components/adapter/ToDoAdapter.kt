@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import thuan.todolist.R
 import thuan.todolist.databinding.ItemTodoBinding
 import thuan.todolist.feature_todo.domain.model.ToDo
+import thuan.todolist.feature_todo.domain.util.ToDoUtils
 import thuan.todolist.feature_todo.ui.home.ToDoViewModel
 import thuan.todolist.feature_todo.ui.home.ToDosEvent
 import thuan.todolist.feature_todo.ui.home.components.adapter.util.ToDoDiffUtil
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ToDoAdapter(private val viewModel: ToDoViewModel) :
     RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
@@ -43,6 +42,7 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         ) {
             binding.todo = todo
             binding.viewModel = viewModel
+            binding.tvDateAndTime.text = ToDoUtils.dateToString(todo.dateAndTime)
             binding.executePendingBindings()
         }
 
@@ -86,9 +86,9 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         }
 
         private fun checkExpired(todo: ToDo) {
-            if (todo.dateAndTime == "Time not set") return
-            val sdf = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-            val dateAndTimeInMilliSeconds = sdf.parse(todo.dateAndTime)!!.time
+            if (todo.dateAndTime == null) return
+
+            val dateAndTimeInMilliSeconds = todo.dateAndTime.time
             val currentTime = System.currentTimeMillis()
             if (todo.isExpired != (dateAndTimeInMilliSeconds < currentTime)) {
                 viewModel.onEvent(ToDosEvent.UpdateToDo(todo.copy(isExpired = dateAndTimeInMilliSeconds < currentTime)))

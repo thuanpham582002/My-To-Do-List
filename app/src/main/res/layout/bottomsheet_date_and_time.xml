@@ -52,21 +52,25 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
             style="@style/ThemeOverlay.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginEnd="8sp"
+            />
         <!--        android:layout_marginEnd="@dimen/extreme_large_margin3"-->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOK"
             style="@style/ThemeOverlay.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/OK"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginStart="8sp"
+            />
         <!--        android:layout_marginStart="@dimen/extreme_large_margin3"-->
     </LinearLayout>
 </RelativeLayout>

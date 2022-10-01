@@ -9,6 +9,7 @@ import thuan.todolist.feature_todo.domain.model.InvalidToDoException
 import thuan.todolist.feature_todo.domain.model.ToDo
 import thuan.todolist.feature_todo.domain.use_case.ToDoUseCases
 import thuan.todolist.feature_todo.domain.util.ToDoUtils
+import java.util.*
 
 class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
@@ -17,7 +18,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
     val toDoId = MutableLiveData<Long>()
     val todoTitle = MutableLiveData("")
     val todoDescription = MutableLiveData("")
-    val todoDateAndTime = MutableLiveData("Date not set")
+    val todoDateAndTime: MutableLiveData<Date?> = MutableLiveData()
     val isTimeSet: MutableLiveData<Boolean> = MutableLiveData()
     val isDone: MutableLiveData<Boolean> = MutableLiveData()
     val groupName = MutableLiveData("Default")
@@ -27,9 +28,9 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
         todoTitle.value = toDo?.title
         todoDescription.value = toDo?.description
         todoDateAndTime.value = toDo?.dateAndTime
-        isTimeSet.value = toDo!!.dateAndTime != "Time not set"
-        isDone.value = toDo.isCompleted
-        groupName.value = toDo.groupName
+        isTimeSet.value = toDo?.dateAndTime != null
+        isDone.value = toDo?.isCompleted
+        groupName.value = toDo?.groupName
     }
 
     fun getCurrentToDo(): ToDo {
@@ -37,7 +38,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
             id = toDo?.id ?: 0,
             title = todoTitle.value.toString(),
             description = todoDescription.value.toString(),
-            dateAndTime = todoDateAndTime.value.toString(),
+            dateAndTime = todoDateAndTime.value,
             isCompleted = isDone.value ?: false,
             groupName = groupName.value.toString(),
             isExpired = toDo?.isExpired ?: false
@@ -105,10 +106,10 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             id = 0,
                             title = title.toString(),
                             description = description.toString(),
-                            dateAndTime = dateAndTime.toString(),
+                            dateAndTime = dateAndTime,
                             isCompleted = isDone ?: false,
                             groupName = groupName.toString(),
-                            isExpired = ToDoUtils.isExpired(dateAndTime.toString())
+                            isExpired = ToDoUtils.isExpired(dateAndTime)
                         )
                     )
                     latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
@@ -124,10 +125,10 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             id = toDo.id,
                             title = title.toString(),
                             description = description.toString(),
-                            dateAndTime = dateAndTime.toString(),
+                            dateAndTime = dateAndTime,
                             isCompleted = isDone ?: false,
                             groupName = groupName.toString(),
-                            isExpired = ToDoUtils.isExpired(dateAndTime.toString())
+                            isExpired = ToDoUtils.isExpired(dateAndTime)
                         )
                     )
                     latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
