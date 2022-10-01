@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="action_settings">Cài đặt</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="add_todo">Thêm công việc</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="title">Tiêu đề</string>
+    <string name="no_list_selected">Không có danh sách nào được chọn</string>
+    <string name="time_not_set">Chưa hẹn giờ</string>
+    <string name="description">Mô tả</string>
+    <string name="save">LƯU</string>
+    <string name="add_group">Thêm nhóm</string>
+    <string name="set_date_and_time">Thiết lập ngày và giờ</string>
+    <string name="cancel">Hủy</string>
+    <string name="OK">OK</string>
+    <string name="descending">Giảm dần</string>
+    <string name="ascending">Tăng dần</string>
+    <string name="none">Không</string>
+    <string name="date">Ngày</string>
+    <string name="all">Tất cả</string>
+    <string name="completed">Đã hoàn thành</string>
+    <string name="uncompleted">Chưa hoàn thành</string>
+    <string name="filter">Lọc</string>
+    <string name="delete_time">Xóa thời gian</string>
+    <string name="group">Nhóm</string>
+    <string name="done">Hoàn thành</string>
+    <string name="delete_todo">Xóa công việc</string>
+    <string name="delete_this_todo">Xóa công việc này?</string>
+    <string name="are_you_sure_you_want_to_delete_this_todo">Bạn có chắc chắn muốn xóa công việc này?</string>
+    <string name="delete">Xóa</string>
+    <string name="todo_preference_title">Cài đặt</string>
+    <string name="todo_preference_summary">Cài đặt ứng dụng</string>
+    <string name="todo_preference_category_date_and_time_title">Ngày và giờ</string>
+    <string name="todo_preference_category_date_format_title">Định dạng ngày</string>
+    <string name="todo_preference_category_date_format_summary">HH:mm dd/mm/yyyy</string>
+    <string name="todo_preference_category_customize_title">Tùy chỉnh</string>
+    <string name="todo_preference_category_theme_summary">Chế độ sáng</string>
+    <string name="todo_preference_category_theme_title">Chế độ</string>
+    <string name="todo_preference_category_about_me_title">Thông tin</string>
+    <string name="todo_preference_category_about_me_summary">Thuận - D20 Mobile ProPtit</string>
+    <string name="search_to_do">Tìm kiếm công việc</string>
+    <string name="selected">đã chọn</string>
+    <string name="todo_preference_category_language_title">Ngôn ngữ</string>
+    <string name="add">Thêm</string>
+    <string name="are_you_sure_quit_without_saving">Bạn có muốn thoát mà không lưu?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="mark_done">Đánh dấu hoàn thành</string>
+    <string name="settings">Cài đặt</string>
+    <string name="my_to_do">Công việc của tôi</string>
+</resources>
