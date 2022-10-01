@@ -3,7 +3,7 @@
 ## Một ứng dụng Android To-do app đơn giản viết bằng kotlin.
 Kotlin, Room Database, LiveData, MVVM + Clean Architecture, Coroutine, AlarmManager, Broadcast Receiver, Material Components, Databinding, Navigation Graph
 ## Current Features
-- Add and manage tasks
+- Add, Edit, Delete and manage tasks
 - Multiple Task Lists
 - Search Tasks
 - Overview of all your tasks at a glance
