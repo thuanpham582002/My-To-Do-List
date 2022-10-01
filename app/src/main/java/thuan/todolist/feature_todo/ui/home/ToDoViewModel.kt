@@ -30,7 +30,7 @@ class ToDoViewModel(private val toDoUseCases: ToDoUseCases) : ViewModel() {
         id = -1,
         title = "",
         description = "",
-        dateAndTime = "Time not set",
+        dateAndTime = null,
         isCompleted = false,
         groupName = "Default",
         isExpired = false
