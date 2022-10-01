@@ -25,14 +25,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var binding: ActivityMainBinding
 
     override fun attachBaseContext(newBase: Context) {
-        val isNightMode = PreferenceManager.getDefaultSharedPreferences(newBase)
-            .getString(APP_THEME_MODE, "light")
-        if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES && isNightMode == "dark") {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO && isNightMode == "light") {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         super.attachBaseContext(
             LanguageUtil.attachBaseContext(
                 newBase,

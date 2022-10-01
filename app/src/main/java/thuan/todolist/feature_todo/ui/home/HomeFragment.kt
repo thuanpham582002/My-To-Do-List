@@ -28,6 +28,7 @@ import thuan.todolist.feature_todo.domain.util.*
 import thuan.todolist.feature_todo.ui.home.components.adapter.ToDoAdapter
 import thuan.todolist.feature_todo.ui.home.components.adapter.todo_selectiontracker.ToDosDetailsLookup
 import thuan.todolist.feature_todo.ui.home.components.adapter.todo_selectiontracker.ToDosKeyProvider
+import java.util.*
 
 const val TAG = "HomeFragment"
 
@@ -52,6 +53,7 @@ class HomeFragment : Fragment(), ActionMode.Callback, SearchView.OnQueryTextList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG, "onViewCreated: ${Locale.getDefault().language}")
         isViewCreated = true
         setupViewModel()
         setupToolbar()

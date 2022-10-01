@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.LocaleList
 import android.text.TextUtils
+import android.util.Log
 
 import java.util.Locale
 
@@ -50,6 +51,7 @@ object LanguageUtil {
     }
 
     fun attachBaseContext(context: Context, language: String): Context {
+        Log.i(TAG, "attachBaseContext: $language")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             updateResources(context, language)
         } else {
@@ -59,6 +61,7 @@ object LanguageUtil {
 
     @TargetApi(Build.VERSION_CODES.N)
     private fun updateResources(context: Context, language: String): Context {
+        Log.i("attachBaseContext", "attachBaseContext: ")
         val resources = context.resources
         val locale = getLocaleByLanguage(language)
         val configuration = resources.configuration
