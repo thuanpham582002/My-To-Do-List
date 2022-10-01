@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import thuan.todolist.MainActivity
 
 object DialogAddGroup {
     @SuppressLint("InflateParams")
@@ -17,12 +16,12 @@ object DialogAddGroup {
             )
             val editText = viewInflater.findViewById<EditText>(thuan.todolist.R.id.et_input)
             setView(viewInflater)
-            setTitle(MainActivity.RESOURCES_INSTANCE.getString(thuan.todolist.R.string.add_group))
-            setPositiveButton(MainActivity.RESOURCES_INSTANCE.getString(thuan.todolist.R.string.add)) { _, _ ->
+            setTitle(context.resources.getString(thuan.todolist.R.string.add_group))
+            setPositiveButton(context.resources.getString(thuan.todolist.R.string.add)) { _, _ ->
                 val groupName = editText.text.toString()
                 onAddGroup(groupName)
             }
-            setNegativeButton(MainActivity.RESOURCES_INSTANCE.getString(thuan.todolist.R.string.cancel)) { dialog, _ ->
+            setNegativeButton(context.resources.getString(thuan.todolist.R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
         }.create().show()

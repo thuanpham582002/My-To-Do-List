@@ -41,7 +41,8 @@ class DateAndTimePickerBottomSheet : BottomSheetDialogFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvDetailTime.text = ToDoUtils.dateToString(getCurrentTimeAndDate())
+        binding.tvDetailTime.text =
+            ToDoUtils.dateToString(requireContext(), getCurrentTimeAndDate())
         setOnClick()
     }
 

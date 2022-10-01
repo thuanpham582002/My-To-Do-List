@@ -8,11 +8,12 @@ import android.os.Build
 import thuan.todolist.feature_todo.domain.service.constants.TODO_CHANNEL_ID
 
 class App : Application() {
-
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
     }
+
+
 
     private fun createNotificationChannel() {
         val name = "Alarm ToDo"

@@ -42,7 +42,8 @@ class ToDoAdapter(private val viewModel: ToDoViewModel) :
         ) {
             binding.todo = todo
             binding.viewModel = viewModel
-            binding.tvDateAndTime.text = ToDoUtils.dateToString(todo.dateAndTime)
+            binding.tvDateAndTime.text =
+                ToDoUtils.dateToString(binding.root.context, todo.dateAndTime)
             binding.executePendingBindings()
         }
 

@@ -112,7 +112,7 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         }
 
         viewModel.todoDateAndTime.observe(viewLifecycleOwner) {
-            binding.tvTimeAndDate.text = ToDoUtils.dateToString(it)
+            binding.tvTimeAndDate.text = ToDoUtils.dateToString(requireContext(), it)
         }
     }
 
@@ -176,7 +176,8 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         binding.apply {
             etTitle.setText(viewModel.todoTitle.value)
             etDescription.setText(viewModel.todoDescription.value)
-            tvTimeAndDate.text = ToDoUtils.dateToString(viewModel.todoDateAndTime.value)
+            tvTimeAndDate.text =
+                ToDoUtils.dateToString(requireContext(), viewModel.todoDateAndTime.value)
             tvGroup.text = viewModel.groupName.value
             if (AddAndEditFragmentArgs.fromBundle(requireArguments()).todo!!.title.isEmpty()) {
                 btnDelete.visibility = View.GONE

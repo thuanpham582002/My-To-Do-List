@@ -1,6 +1,7 @@
 package thuan.todolist.feature_setting.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
+import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -49,7 +51,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             findNavController().navigate(thuan.todolist.R.id.action_settingsFragment_to_aboutMeFragment)
             true
         }
+        Log.i("SettingsFragment", "onViewCreated: ${Locale.getDefault().language}")
     }
-
 
 }
