@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import thuan.todolist.feature_todo.domain.model.GroupToDo
 import thuan.todolist.feature_todo.domain.model.ToDo
-import thuan.todolist.feature_todo.domain.model.converters.DateConverters
+import thuan.todolist.feature_todo.data.data_source.converters.DateConverters
 
 
 @Database(
