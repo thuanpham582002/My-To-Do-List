@@ -53,4 +53,12 @@
     <string name="proptit_slogan">Lập Trình PTIT, Lập trình từ trái tim</string>
     <string name="fb_proprit">https://www.facebook.com/clubproptit</string>
     <string name="fb_about_me">https://www.facebook.com/p.t.thuan582002</string>
+    <string name="todo_saved">Công việc đã được lưu</string>
+    <string name="group_saved">Nhóm đã được lưu</string>
+    <string name="group_not_saved">Lỗi! Nhóm chưa được lưu</string>
+    <string name="todo_not_saved">Lỗi! Công việc chưa được lưu</string>
+    <string name="todo_not_deleted">Lỗi xảy ra khi xóa công việc</string>
+    <string name="todo_deleted">Công việc đã được xóa</string>
+    <string name="todo_not_updated">Lỗi! Công việc chưa được cập nhật</string>
+    <string name="todo_updated">Công việc đã được cập nhật</string>
 </resources>

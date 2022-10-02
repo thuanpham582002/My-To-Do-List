@@ -20,25 +20,8 @@ enum class LanguageType(language: String?) {
         }
 }
 
-@Suppress("unused", "DEPRECATION")
 object LanguageUtil {
     private const val TAG = "LanguageUtil"
-    var sharedPreferences: SharedPreferences? = null
-    var editor: SharedPreferences.Editor? = null
-
-    fun changeAppLanguage(context: Context, newLanguage: String) {
-        if (TextUtils.isEmpty(newLanguage)) {
-            return
-        }
-        val resources = context.resources
-        val configuration = resources.configuration
-
-        val locale = getLocaleByLanguage(newLanguage)
-        configuration.setLocale(locale)
-        // updateConfiguration
-        val dm = resources.displayMetrics
-        resources.updateConfiguration(configuration, dm)
-    }
 
     private fun getLocaleByLanguage(language: String): Locale {
         // default English

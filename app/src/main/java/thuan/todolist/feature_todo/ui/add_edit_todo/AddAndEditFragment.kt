@@ -80,22 +80,52 @@ class AddAndEditFragment : Fragment(), ActionDeleteToDo, ActionSetTime {
         // Ger event from intent
         viewModel.latestState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AddEditToDoViewModel.UIEvent.ShowSnackBar -> {
-                    showSnackBar(state.message)
-                    viewModel.latestState.value = AddEditToDoViewModel.UIEvent.None
+                is AddAndEditState.ToDoSaved -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_saved))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                    toDoScheduleNotification(
+                        requireContext(),
+                        viewModel.getCurrentToDo()
+                    )
+                    findNavController().popBackStack()
+
                 }
-                is AddEditToDoViewModel.UIEvent.SaveToDoSuccess -> {
-                    showSnackBar(state.message)
+                is AddAndEditState.ToDoNotSaved -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_not_saved))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                }
+                is AddAndEditState.ToDoUpdated -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_updated))
+                    viewModel.latestState.value = AddAndEditState.NoAction
                     toDoScheduleNotification(
                         requireContext(),
                         viewModel.getCurrentToDo()
                     )
                     findNavController().popBackStack()
                 }
-                AddEditToDoViewModel.UIEvent.None -> {}
-                is AddEditToDoViewModel.UIEvent.DeleteToDoSuccess -> {
-                    showSnackBar(state.message)
+                is AddAndEditState.ToDoNotUpdated -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_not_updated))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                }
+                is AddAndEditState.ToDoDeleted -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_deleted))
+                    viewModel.latestState.value = AddAndEditState.NoAction
                     findNavController().popBackStack()
+                }
+                is AddAndEditState.ToDoNotDeleted -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.todo_not_deleted))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                }
+                AddAndEditState.GroupNotSaved -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.group_not_saved))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                }
+                AddAndEditState.GroupSaved -> {
+                    showSnackBar(resources.getString(thuan.todolist.R.string.group_saved))
+                    viewModel.latestState.value = AddAndEditState.NoAction
+                }
+                AddAndEditState.NoAction -> {
+                    // Do nothing
                 }
             }
         }

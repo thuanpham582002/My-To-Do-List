@@ -52,4 +52,12 @@
     <string name="proptit_slogan">Lập Trình PTIT, Lập trình từ trái tim</string>
     <string name="fb_proprit">https://www.facebook.com/clubproptit</string>
     <string name="fb_about_me">https://www.facebook.com/p.t.thuan582002</string>
+    <string name="todo_saved">To Do Saved</string>
+    <string name="group_saved">Group Saved</string>
+    <string name="group_not_saved">Fail to save group</string>
+    <string name="todo_not_deleted">Fail to delete to do</string>
+    <string name="todo_deleted">To do deleted</string>
+    <string name="todo_not_updated">Fail to update to do</string>
+    <string name="todo_updated">To do updated</string>
+    <string name="todo_not_saved">Fail to save to do</string>
 </resources>

@@ -69,10 +69,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         } else if (key == APP_LANGUAGE) {
-            val language = sharedPreferences?.getString(APP_LANGUAGE, "en")
-            Log.i("MainActivity", "onSharedPreferenceChanged: $language")
-            LanguageUtil.changeAppLanguage(applicationContext, language!!)
-            Log.i("MainActivity", "onSharedPreferenceChanged: ${Locale.getDefault().language}")
             recreate()
         }
     }

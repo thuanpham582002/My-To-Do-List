@@ -14,8 +14,8 @@ import java.util.*
 class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val toDo: ToDo?) :
     ViewModel() {
 
-    val latestState = MutableLiveData<UIEvent>()
-    val toDoId = MutableLiveData<Long>()
+    val latestState = MutableLiveData<AddAndEditState>()
+    private val toDoId = MutableLiveData<Long>()
     val todoTitle = MutableLiveData("")
     val todoDescription = MutableLiveData("")
     val todoDateAndTime: MutableLiveData<Date?> = MutableLiveData()
@@ -71,9 +71,9 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                 viewModelScope.launch {
                     try {
                         toDoUseCases.addGroup(GroupToDo(name = event.groupName))
-                        latestState.value = UIEvent.ShowSnackBar("Group added")
+                        latestState.value = AddAndEditState.GroupSaved
                     } catch (e: InvalidGroupException) {
-                        latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save group")
+                        latestState.value = AddAndEditState.GroupNotSaved
                     }
                 }
             }
@@ -84,7 +84,7 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
             AddEditToDoEvent.DeleteToDo -> {
                 viewModelScope.launch {
                     toDoUseCases.deleteToDo(toDo!!)
-                    latestState.value = UIEvent.DeleteToDoSuccess("ToDo deleted")
+                    latestState.value = AddAndEditState.ToDoDeleted
                 }
             }
         }
@@ -112,9 +112,9 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             isExpired = ToDoUtils.isExpired(dateAndTime)
                         )
                     )
-                    latestState.value = UIEvent.SaveToDoSuccess("ToDo added")
+                    latestState.value = AddAndEditState.ToDoSaved
                 } catch (e: InvalidToDoException) {
-                    latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save todo")
+                    latestState.value = AddAndEditState.ToDoNotSaved
                 }
             }
         } else {
@@ -131,9 +131,9 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
                             isExpired = ToDoUtils.isExpired(dateAndTime)
                         )
                     )
-                    latestState.value = UIEvent.SaveToDoSuccess("ToDo updated")
+                    latestState.value = AddAndEditState.ToDoUpdated
                 } catch (e: InvalidToDoException) {
-                    latestState.value = UIEvent.ShowSnackBar(e.message ?: "Cannot save todo")
+                    latestState.value = AddAndEditState.ToDoNotUpdated
                 }
             }
         }
@@ -141,14 +141,6 @@ class AddEditToDoViewModel(private val toDoUseCases: ToDoUseCases, private val t
 
     fun getGroupToDo(): LiveData<List<GroupToDo>> {
         return toDoUseCases.getGroupsToDo()
-    }
-
-    sealed class UIEvent {
-        data class ShowSnackBar(val message: String) : UIEvent()
-        data class SaveToDoSuccess(val message: String) : UIEvent()
-        data class DeleteToDoSuccess(val message: String) : AddEditToDoViewModel.UIEvent()
-
-        object None : UIEvent()
     }
 }
 
