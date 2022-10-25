@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.todoapp_cleanarch_koin.ui.todo.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/anim_from_bottom"
+            app:exitAnim="@anim/anim_leave_from_top"
+            app:popEnterAnim="@anim/anim_from_top"
+            app:popExitAnim="@anim/anim_leave_from_bottom" />
+        <action
+            android:id="@+id/action_homeFragment_to_addGroupFragment"
+            app:destination="@id/addGroupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.todoapp_cleanarch_koin.ui.setting.ui.SettingsFragment"
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutMeFragment"
+            app:destination="@id/aboutMeFragment"
+            app:enterAnim="@anim/anim_from_bottom"
+            app:exitAnim="@anim/anim_leave_from_top"
+            app:popEnterAnim="@anim/anim_from_top"
+            app:popExitAnim="@anim/anim_leave_from_bottom" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutMeFragment"
+        android:name="com.example.todoapp_cleanarch_koin.ui.setting.ui.AboutMeFragment"
+        android:label="AboutMeFragment"
+        tools:layout="@layout/fragment_about_me" />
+    <fragment
+        android:id="@+id/addGroupFragment"
+        android:name="com.example.todoapp_cleanarch_koin.ui.todo.addgroup.AddGroupFragment"
+        android:label="AddGroupFragment"
+        tools:layout="@layout/fragment_add_group">
+
+    </fragment>
+</navigation>

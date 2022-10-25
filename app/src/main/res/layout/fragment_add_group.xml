@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_add_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_name"
+            android:textColor="#0277BD"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_add_group"
+            android:layout_marginEnd="4dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:helperTextEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_add_group">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_add_group_custom"
+                android:drawablePadding="10dp"
+                android:hint="@string/group_name"
+                android:inputType="text"
+                android:maxLength="30"
+                android:minHeight="48dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_color_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ti_group_name"
+            android:layout_marginTop="20dp"
+            android:text="@string/color_tag"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ti_group_name" />
+
+        <TextView
+            android:id="@+id/tv_color_tag_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_color_tag"
+            android:text="@string/the_color_tag_is_used_to_identify_the_group_in_the_list_of_groups_you_can_change_the_color_tag_later"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_color_tag" />
+
+        <RadioGroup
+            android:id="@+id/rg_color_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_color_tag_description"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_color_tag_description">
+
+            <RadioButton
+                android:id="@+id/rb_color_black"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_black"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_brown"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:layout_gravity="center"
+                android:background="@drawable/radio_btn_brown"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+            <RadioButton
+                android:id="@+id/rb_color_green"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:layout_gravity="center"
+                android:background="@drawable/radio_btn_green"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+            <RadioButton
+                android:id="@+id/rb_color_blue"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:layout_gravity="center"
+                android:background="@drawable/radio_btn_blue"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_red"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_red"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_yellow"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_yellow"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_purple"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_purple"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_orange"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_orange"
+                android:button="@null" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/rb_color_grey"
+                android:layout_width="@dimen/radio_btn_color_size"
+                android:layout_height="@dimen/radio_btn_color_size"
+                android:background="@drawable/radio_btn_grey"
+                android:button="@null" />
+        </RadioGroup>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_add_group"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="16dp"
+            android:text="@string/add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

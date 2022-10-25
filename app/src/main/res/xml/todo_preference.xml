@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><!--fragment_todo_preference-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:key="todo_preference"
+    android:summary="@string/todo_preference_summary"
+    android:title="@string/todo_preference_title"
+    tools:context=".ui.settings.TodoPreferenceFragment">
+
+    <PreferenceCategory
+        android:title="@string/todo_preference_category_date_and_time_title"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:defaultValue="HH:mm dd/MM/yyyy"
+            android:key="todo_date_and_time_format"
+            android:title="@string/todo_preference_category_theme_title"
+            app:entries="@array/todo_preference_category_date_format_entries"
+            app:entryValues="@array/todo_preference_category_date_format_entry_values"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/todo_preference_category_customize_title"
+        app:iconSpaceReserved="false">
+        <ListPreference
+            android:defaultValue="light"
+            android:key="todo_theme"
+            android:title="@string/todo_preference_category_theme_title"
+            app:entries="@array/todo_preference_category_theme_entries"
+            app:entryValues="@array/todo_preference_category_theme_entry_values"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="en"
+            android:key="todo_language"
+            android:title="@string/todo_preference_category_language_title"
+            app:entries="@array/todo_preference_category_language_entries"
+            app:entryValues="@array/todo_preference_category_language_entry_values"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/todo_preference_category_about_me_title"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="todo_about_me"
+            android:summary="@string/todo_preference_category_about_me_summary"
+            android:title="@string/todo_preference_category_about_me_title"
+            app:iconSpaceReserved="false"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>
+

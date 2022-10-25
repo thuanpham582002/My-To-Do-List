@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_layout"
+    app:alignContent="stretch"
+    app:alignItems="stretch"
+    app:flexWrap="wrap">
+
+    <CheckBox
+        android:id="@+id/rb_color_black"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_black"
+        android:button="@null" />
+
+    <CheckBox
+    android:id="@+id/rb_color_brown"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_brown"
+        android:button="@null" />
+
+
+    <CheckBox
+        android:id="@+id/rb_color_green"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_green"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_blue"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_blue"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_red"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_red"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_yellow"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_yellow"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_purple"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_purple"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_orange"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_orange"
+        android:button="@null" />
+
+    <CheckBox
+        android:id="@+id/rb_color_grey"
+        android:layout_width="@dimen/radio_btn_color_size"
+        android:layout_height="@dimen/radio_btn_color_size"
+        android:layout_margin="@dimen/radio_btn_color_margin"
+        android:background="@drawable/radio_btn_grey"
+        android:button="@null" />
+
+</com.google.android.flexbox.FlexboxLayout>

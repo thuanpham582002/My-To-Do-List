@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="title1_size">24sp</dimen>
+    <dimen name="title2_size">20sp</dimen>
+    <dimen name="title3_size">16sp</dimen>
+    <dimen name="title4_size">12sp</dimen>
+    <dimen name="medium_margin" tools:ignore="UnusedResources">16dp</dimen>
+    <dimen name="radio_btn_color_size">25dp</dimen>
+    <dimen name="radio_btn_color_margin">5dp</dimen>
+</resources>

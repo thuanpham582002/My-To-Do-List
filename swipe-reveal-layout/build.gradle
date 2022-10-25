@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 28
+        versionCode 7
+        versionName "1.4.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'swipe-reveal-layout'
+
+    publishedGroupId = 'com.chauthai.swipereveallayout'
+    libraryName = 'SwipeRevealLayout'
+    artifact = 'swipe-reveal-layout'
+
+    libraryDescription = 'Easy, fast and powerful Swipe Layout for Android'
+
+    siteUrl = 'https://github.com/chthai64/SwipeRevealLayout'
+    gitUrl = 'https://github.com/chthai64/SwipeRevealLayout.git'
+
+    libraryVersion = '1.4.0'
+
+    developerId = 'chthai64'
+    developerName = 'Chau Thai'
+    developerEmail = 'chthai64@gmail.com'
+
+    licenseName = 'The MIT License (MIT)'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+

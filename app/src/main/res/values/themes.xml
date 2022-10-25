@@ -1,0 +1,37 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TodoAppCleanArchWithKoin" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <!-- Customize action Mode Style -->
+        <item name="actionModeStyle">@style/AppBaseThemeMaterial.ActionMode</item>
+        <!-- Change color Close Button in action mode       -->
+        <item name="actionModeCloseButtonStyle">@style/MyCloseButton</item>
+    </style>
+
+    <style name="Theme.TodoAppCleanArchWithKoin" parent="Base.Theme.TodoAppCleanArchWithKoin" />
+
+    <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+<!--        <item name="background">?attr/colorPrimary</item>-->
+        <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
+    </style>
+
+    <style name="MyCloseButton" parent="Widget.AppCompat.ActionButton.CloseMode">
+        <item name="android:tint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="ActionModeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="ToolBarTheme">
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="actionMenuTextColor">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
+        <item name="textAllCaps">false</item>
+        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
+    </style>
+
+    <style name="MyOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">?attr/colorOnSurface</item>
+    </style>
+</resources>
